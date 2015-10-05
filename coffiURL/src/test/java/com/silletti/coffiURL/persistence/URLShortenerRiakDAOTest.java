@@ -11,11 +11,11 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class URLShortenerRiakDAOTest {
 
-	private URLShortenerRiakDAO test;
+	private URLShortenerRedisDAO test;
 	
 	@Before
 	public void setUp() {
-		test = new URLShortenerRiakDAO();
+		test = new URLShortenerRedisDAO();
 	}
 	
 	@Test
@@ -25,25 +25,42 @@ public class URLShortenerRiakDAOTest {
 	}
 	
 	@Test
-	public void shortURLShouldNotBeEmpty() {
+	public void SetShortURLShouldNotBeEmpty() {
 			Boolean result = test.createShortURL("", "www.google.it");
 			assertTrue(result == false);
 	}
 	
 	@Test
-	public void longURLShouldNotBeEmpty() {
+	public void SetLongURLShouldNotBeEmpty() {
 			Boolean result = test.createShortURL("aeiouyi", "");
 			assertTrue(result == false);
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public void shortURLShouldNotBeNull() {
+	public void SetShortURLShouldNotBeNull() {
 		Boolean result = test.createShortURL(null, "www.google.it");
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public void longURLShouldNotBeNull() {
+	public void SetLongURLShouldNotBeNull() {
 		Boolean result = test.createShortURL("aeiouy",null);
+	}
+	
+	@Test
+	public void GetProperLongURL() {
+		String result = test.getLongURL("aeiouy");
+		assertTrue(result.equals("www.google.it"));
+	}
+	
+	@Test 
+	public void GiveEmptyShortURL() {
+		String result = test.getLongURL("");
+		assertNull(result);
+	}
+	
+	@Test(expected = Exception.class)
+	public void GiveNullShortURL() {
+		String result = test.getLongURL(null);
 	}
 
 }
