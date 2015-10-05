@@ -1,4 +1,6 @@
-package com.silletti.coffiURL.persistence;
+package com.silletti.coffiURL.persistence.RedisFactory;
+
+import com.silletti.coffiURL.persistence.URLShortenerDAO;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
@@ -7,15 +9,15 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
  * Implementazione dell'interfaccia {@link URLShortenerDAO} per 
  * il database Redis.
  * */
-public class URLShortenerRedisDAO implements URLShortenerDAO {
+public class RedisURLShortenerDAO implements URLShortenerDAO {
 
 	private Jedis client;
 	
-	public URLShortenerRedisDAO(){
+	public RedisURLShortenerDAO(){
 		try {
 			client = new Jedis("localhost", 6379);
 		} catch (JedisConnectionException e) {
-			//gestione eccezione
+			e.printStackTrace();
 		}
 	}
 	
