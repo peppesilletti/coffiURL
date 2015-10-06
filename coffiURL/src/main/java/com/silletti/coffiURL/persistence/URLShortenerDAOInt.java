@@ -3,29 +3,47 @@ package com.silletti.coffiURL.persistence;
 import com.silletti.coffiURL.entities.URLObject;
 
 /**
- * DAO per l'entità URLShortener. Consente di interfacciare la classe con il livello di persistenza definito.
+ *  * URLShortener DAO. 
  * */
 public interface URLShortenerDAOInt {
 	
 	/**
-	 * Metodo per la memorizzazione dello shortURL nel database.
+	 * Method for storing the shortURL and its informations in the DB.
 	 * @param shortURL
-	 * 			Stringa contenente il shortURL da memorizzare.
+	 * 			String containing the url to store.
 	 * @param longURL
-	 * 			Stringa contenente il longURL associato allo shortURL.
+	 * 			String containing the longUrl associated to the shortURL.
 	 * @return
-	 * 			Esito dell'operazione di inserimento.
+	 * 			Result of operation.
 	 * */
 	public Boolean createShortURL(String shortURL, URLObject longURL) ;
 	
 	/**
-	 * Metodo per il recupero del longURL associato ad uno shortURL.
+	 * Method for getting the longURL associated to a shortURL.
 	 * @param
-	 * 		Stringa contenente il shortURL associato al longURL
+	 * 			String containing the shortURL associated to the longURL.
 	 * @return
-	 * 		Stringa contenente il longURL associato allo shortURL
+	 * 		String containing the longUrl associated to the shortURL.
 	 * */
 	public URLObject getLongURL(String shortURL);
+	
+	/**
+	 * Method for checking if a shortURL is already associated with a longURL.
+	 * @param
+	 * 		   ShortURL to check
+	 * @return
+	 * 		   Result of checking.
+	 * */
+	public Boolean exist(String shortURL);
+	
+	/**
+	 * Metodo per l'update del numero di clicks.
+	 * @param shortUrl
+	 * 		shortURL per il quale incrementare il numero di clicks
+	 * @return
+	 * 		Risultato dell'operazione.
+	 * */
+	public Boolean updateNumOfClicks(String shortURL);
 	
 	
 }

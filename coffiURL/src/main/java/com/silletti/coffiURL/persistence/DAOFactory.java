@@ -23,6 +23,11 @@ public abstract class DAOFactory {
 	public abstract URLStatsDAOInt getURLStatsDAO();
 	
 	/**
+	 * Get the DAO for the class Blacklist.
+	 * */
+	public abstract BlacklistDAOInt getBlacklistDAO();
+	
+	/**
      * Restituisce una DAOFactory specifica.
      *
      * @param whichFactory

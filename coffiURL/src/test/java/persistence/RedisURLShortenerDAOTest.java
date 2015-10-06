@@ -24,7 +24,7 @@ public class RedisURLShortenerDAOTest {
 	public void setUp() {
 		test = new RedisURLShortenerDAO();
 		url = new URLObject("www.google.it", "12/12/2015", 
-				"Mozilla", "Linux", "Bari/Italy", 5, "127.32.32.652");
+				"Mozilla", "Linux", "Bari/Italy", "5", "127.32.32.652");
 	}
 	
 	//Test per il metodo createShortURL

@@ -1,5 +1,6 @@
 package com.silletti.coffiURL.persistence.RedisFactory;
 
+import com.silletti.coffiURL.persistence.BlacklistDAOInt;
 import com.silletti.coffiURL.persistence.DAOFactory;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 import com.silletti.coffiURL.persistence.URLStatsDAOInt;
@@ -14,6 +15,11 @@ public class RedisDAOFactory extends DAOFactory {
 	@Override
 	public URLStatsDAOInt getURLStatsDAO() {
 		return (RedisURLStatsDAO) createDAO(RedisURLStatsDAO.class);
+	}
+	
+	@Override
+	public BlacklistDAOInt getBlacklistDAO() {
+		return (BlacklistDAOInt) createDAO(RedisBlacklistDAO.class);
 	}
 	
 	 /**
