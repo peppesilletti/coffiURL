@@ -59,9 +59,14 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 		} else {
 					
 			URLObject result = new URLObject(client.hget(shortURL, Constants.LONGURL),
-					null,  null, null, null, null, null);
+					null,  null, null, null, null, null);	
 			
-			return result; 
+			if (result.getURL() == null) {
+				return null;
+			} else {
+				return result; 
+			}
+			
 		}
 	}
 	

@@ -2,6 +2,8 @@ package persistence;
 
 import static org.junit.Assert.*;
 
+import java.net.URL;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -25,9 +27,28 @@ public class RedisURLShortenerDAOTest {
 				"Mozilla", "Linux", "Bari/Italy", 5, "127.32.32.652");
 	}
 	
+	//Test per il metodo createShortURL
+	
+	@Test
+	public void SetShortURLShouldNotBeEmpty() {
+			Boolean result = test.createShortURL("", url);
+			assertTrue(result == false);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void SetShortURLShouldNotBeNull() {
+		Boolean result = test.createShortURL(null, url);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void SetLongURLShouldNotBeNull() {
+		Boolean result = test.createShortURL("test1",null);
+	}
+	
 	@Test
 	public void URLShouldBeInsered() {
-			Boolean result = test.createShortURL("test6", url);
+			Double rand = Math.random()*100000;
+			Boolean result = test.createShortURL("test"+rand, url);
 			assertTrue(result == true);
 	}
 	
@@ -36,6 +57,8 @@ public class RedisURLShortenerDAOTest {
 			Boolean result = test.createShortURL("test1", url);
 			assertTrue(result == false);
 	}
+	
+	//Test per il metodo updateNumOfClicks
 	
 	@Test
 	public void ClicksShouldBeUpdate() {
@@ -54,22 +77,7 @@ public class RedisURLShortenerDAOTest {
 		Boolean result = test.updateNumOfClicks(null);
 	}
 	
-	@Test
-	public void SetShortURLShouldNotBeEmpty() {
-			Boolean result = test.createShortURL("", url);
-			assertTrue(result == false);
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void SetShortURLShouldNotBeNull() {
-		Boolean result = test.createShortURL(null, url);
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void SetLongURLShouldNotBeNull() {
-		Boolean result = test.createShortURL("test1",null);
-	}
-	
+	//Test per il metodo getLongURL	
 	
 	@Test
 	public void GetProperLongURL() {
@@ -89,4 +97,9 @@ public class RedisURLShortenerDAOTest {
 		URLObject result = test.getLongURL(null);
 	}
 	
+	@Test
+	public void ShortURLShouldExist() {
+		URLObject result = test.getLongURL(Double.toString(Math.random()*10));
+		assertNull(result);
+	}
 }
