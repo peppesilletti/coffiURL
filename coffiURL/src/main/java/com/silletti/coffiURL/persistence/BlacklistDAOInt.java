@@ -1,5 +1,7 @@
 package com.silletti.coffiURL.persistence;
 
+import java.util.List;
+
 /**
  * Blacklist class DAO.
  * */
@@ -14,11 +16,19 @@ public interface BlacklistDAOInt {
 	public Boolean addWord(String word);
 	
 	/**
-	 * Method for check if a word is in the repository
-	 * @param word
-	 * 		Word to check
+	 * Method for getting all the bad words in the repository.
 	 * @return
-	 * 		Result of checking
+	 * 		List with bad words
 	 * * */
-	public Boolean checkWord(String word);
+	public List<String> getAllWords();
+	
+	/**
+	 * Method for saving a list of bad words in the repository.
+	 * @param words
+	 * 		List of bad words
+	 * @return
+	 * 		Result of operation
+	 * */
+	public Boolean setFromList(List<String> words);
+	
 }

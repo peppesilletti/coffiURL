@@ -33,20 +33,19 @@ public class RedisBlacklistDAO implements BlacklistDAOInt {
 		}
 	}
 
-	public Boolean checkWord(String word) {
-
-		if (word.isEmpty()) {
-			return false;
-		} else {
-			List<String> words = client.lrange("blacklist", 0, -1);
-			for (String item:words) {
-				if (item.equals(word)) {
-					return true;
-				}
-			}
-		}
+	public List<String> getAllWords() {
+		List<String> list = client.lrange("blacklist", 0, -1);
 		
-		return false;
+		if(list != null) {
+			return list;
+		} else {
+			return null;
+		}
+	}
+
+	public Boolean setFromList(List<String> words) {
+		
+		return null;
 	}
 
 }

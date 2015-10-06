@@ -14,6 +14,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 public class URLShortenerEngine implements URLShortenerEngineInt {
 
 	private URLShortenerDAOInt dao;
+	private Blacklist bl;
 	
 	public URLShortenerEngine() {
 		try {
@@ -22,6 +23,8 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		bl = new Blacklist();
 	}
 
 	public String generateShortURL(URLObject longURL) {
@@ -33,7 +36,7 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 					Constants.LENGTHSHORTURL);
 			result =  dao.createShortURL(shortURL, longURL);
 			
-		} while (!dao.exist(shortURL));
+		} while (!dao.exist(shortURL) || bl.hasBadWord(shortURL));
 		
 		if (result == true) {
 			return shortURL;
@@ -44,7 +47,7 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 
 	public Boolean createCustomURL(String shortURL, URLObject longURL) {
 		
-		if (Blacklist.hasBadWord(shortURL) || dao.exist(shortURL)) {
+		if (bl.hasBadWord(shortURL) || dao.exist(shortURL)) {
 			return false;
 		} else {
 			Boolean result = dao.createShortURL(shortURL, longURL);

@@ -33,24 +33,5 @@ public class RedisBlacklistDAOTest {
 		Boolean result = test.addWord("");
 		assertTrue(result == false);
 	}
-	
-	//Test per checkWord()
-	@Test
-	public void CheckedWordShouldNotBeEmpty() {
-		Boolean result = test.checkWord("");
-		assertTrue(result == false);
-	}
-	
-	@Test
-	public void CheckedWordIsInside() {
-		Boolean result = test.checkWord("abcd");
-		assertTrue(result == true);
-	}
-	
-	@Test
-	public void CheckedWordIsNotInside() {
-		Boolean result = test.checkWord("aeiouy");
-		assertTrue(result == false);
-	}
 
 }

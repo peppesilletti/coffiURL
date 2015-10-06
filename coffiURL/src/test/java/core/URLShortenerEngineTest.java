@@ -13,7 +13,7 @@ public class URLShortenerEngineTest {
 
 	private URLShortenerEngine test;
 	
-	private String shortURL = "test87";
+	private String shortURL = "test88";
 	
 	private URLObject longURL;
 	
