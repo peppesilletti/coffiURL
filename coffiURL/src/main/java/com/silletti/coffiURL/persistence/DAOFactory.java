@@ -15,7 +15,12 @@ public abstract class DAOFactory {
 	/**
 	 * Restituisce il DAO per la classe URLShortener.
 	 * */
-	public abstract URLShortenerDAO getURLShortenerDAO();
+	public abstract URLShortenerDAOInt getURLShortenerDAO();
+	
+	/**
+	 * Restituisce il DAO per la classe URLStats.
+	 * */
+	public abstract URLStatsDAOInt getURLStatsDAO();
 	
 	/**
      * Restituisce una DAOFactory specifica.
