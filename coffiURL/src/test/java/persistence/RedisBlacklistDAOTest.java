@@ -23,11 +23,6 @@ public class RedisBlacklistDAOTest {
 		assertTrue(result);
 	}
 	
-	@Test(expected=Exception.class) 
-	public void WordShouldNotBeInsered(){
-		test.addWord(null);
-	}
-	
 	@Test
 	public void WordShouldNotBeEmpty() {
 		Boolean result = test.addWord("");

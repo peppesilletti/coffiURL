@@ -13,7 +13,7 @@ public class URLShortenerEngineTest {
 
 	private URLShortenerEngine test;
 	
-	private String shortURL = "test88";
+	private String shortURL = "test"+Math.random()*10;
 	
 	private URLObject longURL;
 	

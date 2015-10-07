@@ -1,10 +1,15 @@
 package com.silletti.coffiURL.core;
 
 import com.silletti.coffiURL.entities.URLObject;
+import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
+import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
+import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;
 import com.silletti.coffiURL.persistence.DAOFactory;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 import com.silletti.coffiURL.utilities.Blacklist;
 import com.silletti.coffiURL.utilities.Constants;
+
+import java.util.logging.Level;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -21,7 +26,7 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 			dao = DAOFactory.getDAOFactory(DAOFactory.REDIS).
 					getURLShortenerDAO();
 		} catch (Exception e) {
-			e.printStackTrace();
+			handleExceptions(e, ExceptionsHandler.FATAL);
 		}
 		
 		bl = new Blacklist();
@@ -62,6 +67,15 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/**
+	 * Method for handling the DAO exceptions.
+	 * */
+	private void handleExceptions(final Exception e, final Level t) {
+        DAOException ex = new DAOException(e.getMessage());
+        ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
+        er.processError(ex.getClass(), ex, t);
+    }
 	
 
 }

@@ -22,13 +22,4 @@ public interface BlacklistDAOInt {
 	 * * */
 	public List<String> getAllWords();
 	
-	/**
-	 * Method for saving a list of bad words in the repository.
-	 * @param words
-	 * 		List of bad words
-	 * @return
-	 * 		Result of operation
-	 * */
-	public Boolean setFromList(List<String> words);
-	
 }

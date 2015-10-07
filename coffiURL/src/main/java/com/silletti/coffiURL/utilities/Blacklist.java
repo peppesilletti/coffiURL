@@ -9,9 +9,13 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
+import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
+import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;
 import com.silletti.coffiURL.persistence.BlacklistDAOInt;
 import com.silletti.coffiURL.persistence.DAOFactory;
 
@@ -27,7 +31,7 @@ private BlacklistDAOInt dao;
 			dao = DAOFactory.getDAOFactory(DAOFactory.REDIS).
 					getBlacklistDAO();
 		} catch (Exception e) {
-			e.printStackTrace();
+			handleExceptions(e, ExceptionsHandler.FATAL);
 		}
 	}
 	
@@ -96,15 +100,21 @@ private BlacklistDAOInt dao;
 			br.close();
 			fr.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			handleExceptions(e, ExceptionsHandler.WARNING);
 		} catch (IOException e) {
-			e.printStackTrace();
+			handleExceptions(e, ExceptionsHandler.WARNING);
 		}
 		
 	}
 	
-	public static void main(String[] args) {
-		Blacklist bl = new Blacklist();
-		bl.initRepository();
-	}
+	/**
+	 * Method for handling the DAO exceptions.
+	 * */
+	private void handleExceptions(final Exception e, final Level t) {
+        DAOException ex = new DAOException(e.getMessage());
+        ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
+        er.processError(ex.getClass(), ex, t);
+    }
+	
+	
 }

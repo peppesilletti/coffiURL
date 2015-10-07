@@ -21,18 +21,13 @@ public class RedisURLStatsDAOTest {
 	@Test
 	public void URLStatsShouldBeGiven() {
 		Statistics result = test.getURLStats("test1");
-		assertTrue(result.getLongUrl().equals("www.googleit"));
+		assertTrue(result.getLongUrl().equals("www.google.it"));
 	}
 	
 	@Test
 	public void ShortURLShouldNotBeEmpty() {
 		Statistics result = test.getURLStats("");
 		assertNull(result);
-	}
-	
-	@Test(expected=Exception.class)
-	public void ShortURLShouldNotBeNull() {
-		Statistics result = test.getURLStats(null);
 	}
 
 }

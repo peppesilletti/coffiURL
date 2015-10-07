@@ -52,12 +52,6 @@ public class RedisURLShortenerDAOTest {
 			assertTrue(result == true);
 	}
 	
-	@Test
-	public void DuplicateURLShouldNotBeInsered() {
-			Boolean result = test.createShortURL("test1", url);
-			assertTrue(result == false);
-	}
-	
 	//Test per il metodo updateNumOfClicks
 	
 	@Test
@@ -82,7 +76,7 @@ public class RedisURLShortenerDAOTest {
 	@Test
 	public void GetProperLongURL() {
 		URLObject result = test.getLongURL("test1");
-		assertTrue(result.getURL().equals("www.googleit"));
+		assertTrue(result.getURL().equals("www.google.it"));
 	}
 	
 	@Test 

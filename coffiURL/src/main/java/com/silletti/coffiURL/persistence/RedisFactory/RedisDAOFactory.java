@@ -1,5 +1,10 @@
 package com.silletti.coffiURL.persistence.RedisFactory;
 
+import java.util.logging.Level;
+
+import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
+import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
+import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;
 import com.silletti.coffiURL.persistence.BlacklistDAOInt;
 import com.silletti.coffiURL.persistence.DAOFactory;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
@@ -35,9 +40,18 @@ public class RedisDAOFactory extends DAOFactory {
         try {
             return classObj.newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+        	handleExceptions(e, ExceptionsHandler.FATAL);
         }
         return null;
+    }
+    
+    /**
+	 * Method for handling the DAO exceptions.
+	 * */
+	private void handleExceptions(final Exception e, final Level t) {
+        DAOException ex = new DAOException(e.getMessage());
+        ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
+        er.processError(ex.getClass(), ex, t);
     }
 
 }
