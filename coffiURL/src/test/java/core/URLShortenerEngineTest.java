@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.silletti.coffiURL.core.URLShortenerEngine;
-import com.silletti.coffiURL.entities.URLObject;
+import com.silletti.coffiURL.entities.Statistics;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 
 public class URLShortenerEngineTest {
@@ -15,36 +15,61 @@ public class URLShortenerEngineTest {
 	
 	private String shortURL = "test"+Math.random()*10;
 	
-	private URLObject longURL;
+	//insert the value from the db
+	private String longURL = "xPxOcG";
 	
 	@Before
 	public void setUp() throws Exception {
 		test = new URLShortenerEngine();		
-		longURL = new URLObject("www.google.it", "12/12/2012", "Mozilla", 
-				"Windows", "Perugia", "0", "172.63.25.120");
 	}
 
 	//Test for the shortURL generation method.
 	
 	@Test
 	public void generateShortURLShouldBeInsered() {
-		String result = test.generateShortURL(longURL);
-		assertTrue(result != null);
+		longURL = test.generateShortURL("www.twitter.it");
+		assertTrue(longURL != null);
+	}
+	
+	@Test
+	public void ExistingPublicURLShouldNotBeInsered() {
+		String result = test.generateShortURL("www.twitter.it");
+		assertTrue(result.equals(longURL));
 	}
 	
 	//Test for the custom short URL insert
 	
 	@Test
 	public void CustomShortURLShouldBeInsered() {
-		Boolean result = test.createCustomURL(shortURL, longURL);
+		Boolean result = test.createCustomURL(shortURL, "www.facebook.it");
 		assertTrue(result);
 	}
 	
 	@Test
 	public void CustomShortURLShouldNotContainBadWord() {
-		Boolean result = test.createCustomURL("shit", longURL);
+		Boolean result = test.createCustomURL("shit", "shit");
 		assertTrue(result == false);
 	}
+	
+	//Test for getting the longURL
+	
+	@Test
+	public void EmptyShortURLShouldNotWork() {
+		String result = test.getLongURL("");
+		assertNull(result);
+	}
+	
+	@Test
+	public void ShortURLShouldExist() {
+		String result = test.getLongURL("xPxOcG");
+		assertTrue(result.equals("www.twitter.it"));
+	}
+	
+	@Test
+	public void LongURLShouldNotExist() {
+		String result = test.getLongURL("pppppppp");
+		assertNull(result);
+	} 
 	
 	
 

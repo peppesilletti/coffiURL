@@ -10,90 +10,77 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.silletti.coffiURL.entities.URLObject;
+import com.silletti.coffiURL.entities.Statistics;
 import com.silletti.coffiURL.persistence.RedisFactory.RedisURLShortenerDAO;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RedisURLShortenerDAOTest {
 
 	private RedisURLShortenerDAO test;
-	private URLObject url;
+	private Statistics url;
 	private String shortURL;
 	
 	@Before
 	public void setUp() {
 		test = new RedisURLShortenerDAO();
-		url = new URLObject("www.google.it", "12/12/2015", 
-				"Mozilla", "Linux", "Bari/Italy", "5", "127.32.32.652");
 	}
 	
 	//Test per il metodo createShortURL
 	
 	@Test
 	public void SetShortURLShouldNotBeEmpty() {
-			Boolean result = test.createShortURL("", url);
+			Boolean result = test.addShortURL("", "www.facebook.it", true);
 			assertTrue(result == false);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void SetShortURLShouldNotBeNull() {
-		Boolean result = test.createShortURL(null, url);
+		Boolean result = test.addShortURL(null, "www.facebook.it", true);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void SetLongURLShouldNotBeNull() {
-		Boolean result = test.createShortURL("test1",null);
+		Boolean result = test.addShortURL("test1", null, true);
 	}
 	
 	@Test
-	public void URLShouldBeInsered() {
+	public void CustomURLShouldBeInsered() {
 			Double rand = Math.random()*100000;
-			Boolean result = test.createShortURL("test"+rand, url);
+			Boolean result = test.addShortURL("test"+rand, "www.facebook.it", true);
 			assertTrue(result == true);
 	}
 	
-	//Test per il metodo updateNumOfClicks
-	
 	@Test
-	public void ClicksShouldBeUpdate() {
-		Boolean result = test.updateNumOfClicks("test1");
-		assertTrue(result == true);
-	}
-	
-	@Test
-	public void UpdateClicksUrlShouldNotBeEmpty() {
-		Boolean result = test.updateNumOfClicks("");
-		assertTrue(result == false);
-	}
-	
-	@Test(expected = Exception.class)
-	public void UpdateClicksUrlShouldNotBeNull() {
-		Boolean result = test.updateNumOfClicks(null);
+	public void RandomURLShouldBeInsered() {
+			Double rand = Math.random()*100000;
+			Boolean result = test.addShortURL("test"+rand, "www.facebook.it", false);
+			assertTrue(result == true);
 	}
 	
 	//Test per il metodo getLongURL	
 	
 	@Test
 	public void GetProperLongURL() {
-		URLObject result = test.getLongURL("test1");
-		assertTrue(result.getURL().equals("www.google.it"));
+		String result = test.getLongURL("test1");
+		assertTrue(result.equals("www.google.it"));
 	}
 	
 	@Test 
 	public void GiveEmptyShortURL() {
-		URLObject result = test.getLongURL("");
+		String result = test.getLongURL("");
 		assertNull(result);
 	}
 	
 	
-	@Test(expected = Exception.class)
+	@Test
 	public void GiveNullShortURL() {
-		URLObject result = test.getLongURL(null);
+		String result = test.getLongURL(null);
+		assertNull(result);
 	}
 	
 	@Test
 	public void ShortURLShouldExist() {
-		URLObject result = test.getLongURL(Double.toString(Math.random()*10));
+		String result = test.getLongURL(Double.toString(Math.random()*10));
 		assertNull(result);
 	}
 }

@@ -1,9 +1,10 @@
 package com.silletti.coffiURL.core;
 
-import com.silletti.coffiURL.entities.URLObject;
+import com.silletti.coffiURL.entities.Statistics;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
 import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;
+import com.silletti.coffiURL.exceptionsHandling.exceptions.URLShortenerEngineException;
 import com.silletti.coffiURL.persistence.DAOFactory;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 import com.silletti.coffiURL.utilities.Blacklist;
@@ -32,31 +33,34 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 		bl = new Blacklist();
 	}
 
-	public String generateShortURL(URLObject longURL) {
+	public String generateShortURL(String longURL) {
 		
 		String shortURL = null;
-		Boolean result = false;
-		do {
-			shortURL = RandomStringUtils.randomAlphabetic(
-					Constants.LENGTHSHORTURL);
-			result =  dao.createShortURL(shortURL, longURL);
-			
-		} while (!dao.exist(shortURL) || bl.hasBadWord(shortURL));
 		
-		if (result == true) {
+		if (dao.existLong(longURL)) { //check if for the longURL exist already a public shortURL.
+			shortURL = dao.getPublicURL(longURL);
+			
 			return shortURL;
 		} else {
-			return null;
+		
+			do {
+				shortURL = RandomStringUtils.randomAlphabetic(
+						Constants.LENGTHSHORTURL);
+				
+				dao.addShortURL(shortURL, longURL, false);
+				
+			} while (!dao.existShort(shortURL) || bl.hasBadWord(shortURL));
+			
+			return shortURL;
 		}
 	}
 
-	public Boolean createCustomURL(String shortURL, URLObject longURL) {
+	public Boolean createCustomURL(String shortURL, String longURL) {
 		
-		if (bl.hasBadWord(shortURL) || dao.exist(shortURL)) {
+		if (bl.hasBadWord(shortURL) || dao.existShort(shortURL)) {
 			return false;
 		} else {
-			Boolean result = dao.createShortURL(shortURL, longURL);
-
+			Boolean result = dao.addShortURL(shortURL, longURL, true);
 			return result;
 		}
 		
@@ -64,18 +68,24 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 	}
 
 	public String getLongURL(String shortURL) {
-		// TODO Auto-generated method stub
-		return null;
+		if (shortURL.isEmpty()) {
+			return null;
+		} else {
+			if (dao.existShort(shortURL)) {
+				return dao.getLongURL(shortURL);
+			} else {
+				return null;
+			}
+		}
 	}
 	
 	/**
-	 * Method for handling the DAO exceptions.
+	 * Method for handling the URLShortenerEngine exceptions.
 	 * */
 	private void handleExceptions(final Exception e, final Level t) {
-        DAOException ex = new DAOException(e.getMessage());
+		URLShortenerEngineException ex = new URLShortenerEngineException(e.getMessage());
         ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
         er.processError(ex.getClass(), ex, t);
     }
-	
 
 }
