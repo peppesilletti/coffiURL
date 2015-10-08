@@ -1,15 +1,42 @@
 package com.silletti.coffiURL.persistence;
 
+import java.util.List;
+
 import com.silletti.coffiURL.entities.Statistics;
-import com.silletti.coffiURL.entities.URLObject;
+import com.silletti.coffiURL.entities.Statistics;
 
 /**
- * DAO per l'entità URLStats. Consente di interfacciare la classe con il livello di persistenza definito.
+ * URLStats entity DAO.
  * */
 public interface URLStatsDAOInt {
 	
+	
 	/**
-	 * Restituisce le statistiche per uno shortURL.
+	 * Add statistics for a shortURL.
+	 * @param 
+	 * 		shortURL 
+	 * @return
+	 * 		result of operation
 	 * */
-	public Statistics getURLStats(String shortURL);
+	public Boolean setURLStats(String shortURL, Statistics stats);
+	
+	/**
+	 * Get the statistics for an URL.
+	 * @param 
+	 * 		shortURL shortURL for statistics
+	 * 		fromTime min of range
+	 * 		toTime	max of range
+	 * @return
+	 * 		Statistics for the shortURL
+	 * */
+	public List<String> getURLStats(String shortURL, Long fromTime, Long toTime);
+	
+	/**
+	 * Get the statistics for an URL.
+	 * @param 
+	 * 		shortURL shortURL for statistics
+	 * @return
+	 * 		Statistics for the shortURL
+	 * */
+	public List<String> getURLStats(String shortURL);
 }

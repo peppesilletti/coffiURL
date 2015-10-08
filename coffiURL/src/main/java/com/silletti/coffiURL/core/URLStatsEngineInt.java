@@ -1,6 +1,7 @@
 package com.silletti.coffiURL.core;
 
-import com.silletti.coffiURL.entities.URLObject;
+import java.util.Map;
+
 
 public interface URLStatsEngineInt {
 	
@@ -11,5 +12,15 @@ public interface URLStatsEngineInt {
 	 * @return
 	 * 		Statistics for the shortURL
 	 * */
-	public String getURLStats(URLObject shortURL);
+	public Map<String, Integer> getStats(String shortURL, Long fromTime, Long toTime);
+	
+	/**
+	 * Method for having the statistics of the shortURL.
+	 * @param shortURL
+	 * 		shortURL for statistics
+	 * @return
+	 * 		Statistics for the shortURL
+	 * */
+	public Map<String, Integer> getStats(String shortURL);
+	
 }

@@ -1,6 +1,6 @@
 package com.silletti.coffiURL.persistence;
 
-import com.silletti.coffiURL.entities.URLObject;
+import com.silletti.coffiURL.entities.Statistics;
 
 /**
  *  * URLShortener DAO. 
@@ -16,7 +16,7 @@ public interface URLShortenerDAOInt {
 	 * @return
 	 * 			Result of operation.
 	 * */
-	public Boolean createShortURL(String shortURL, URLObject longURL) ;
+	public Boolean addShortURL(String shortURL, String longURL, Boolean isCustom) ;
 	
 	/**
 	 * Method for getting the longURL associated to a shortURL.
@@ -25,7 +25,16 @@ public interface URLShortenerDAOInt {
 	 * @return
 	 * 		String containing the longUrl associated to the shortURL.
 	 * */
-	public URLObject getLongURL(String shortURL);
+	public String getLongURL(String shortURL);
+	
+	/**
+	 * Method for getting the public shortURL for a longURL.
+	 * @param
+	 * 			String containing the longURL associated to the shortURL.
+	 * @return
+	 * 		String containing the shortURL associated to the longURL.
+	 * */
+	public String getPublicURL(String longURL);
 	
 	/**
 	 * Method for checking if a shortURL is already associated with a longURL.
@@ -34,16 +43,25 @@ public interface URLShortenerDAOInt {
 	 * @return
 	 * 		   Result of checking.
 	 * */
-	public Boolean exist(String shortURL);
+	public Boolean existShort(String shortURL);
 	
 	/**
-	 * Metodo per l'update del numero di clicks.
-	 * @param shortUrl
-	 * 		shortURL per il quale incrementare il numero di clicks
+	 * Method for checking if random shortURL is associated to a longURL
+	 * @param
+	 * 		   longURL to check
 	 * @return
-	 * 		Risultato dell'operazione.
+	 * 		   Result of checking.
+	 * */
+	public Boolean existLong(String longURL);
+	
+	/**
+	 * Update number of clicks.
+	 * @param shortUrl
+	 * @return
 	 * */
 	public Boolean updateNumOfClicks(String shortURL);
+	
+	
 	
 	
 }

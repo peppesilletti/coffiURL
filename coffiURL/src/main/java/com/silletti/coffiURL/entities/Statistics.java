@@ -1,73 +1,76 @@
 package com.silletti.coffiURL.entities;
 
+import java.io.Serializable;
+
 /**
- * Bean class for statistics.
+ * Bean class for the url object.
  * */
 public class Statistics {
 
-	
-	private String longURL;
-	private String timestamp;
-	private String browser;
-	private String platform;
-	private String geoLocation;
-	private String ipAdress;
-	private String numOfClicks;
-
-	public String getIpAdress() {
-		return ipAdress;
-	}
-
-	public void setIpAdress(String ipAdress) {
-		this.ipAdress = ipAdress;
-	}
-
-	public String getLongUrl() {
-		return longURL;
-	}
-
-	public void setLongUrl(String url) {
-		this.longURL = url;
-	}
-
-	public String getTimestamp() {
-		return timestamp;
-	}
-
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
-	}
-
-	public String getBrowser() {
-		return browser;
 	}
 
 	public void setBrowser(String browser) {
 		this.browser = browser;
 	}
 
-	public String getPlatform() {
-		return platform;
-	}
-
 	public void setPlatform(String platform) {
 		this.platform = platform;
-	}
-
-	public String getGeoLocation() {
-		return geoLocation;
 	}
 
 	public void setGeoLocation(String geoLocation) {
 		this.geoLocation = geoLocation;
 	}
 
-	public String getNumOfClicks() {
-		return numOfClicks;
+	public void setIpAdress(String ipAdress) {
+		this.ipAdress = ipAdress;
 	}
 
-	public void setNumOfClicks(String numOfClicks) {
-		this.numOfClicks = numOfClicks;
+	private static final long serialVersionUID = 1L;
+	private String timestamp;
+	private String browser;
+	private String platform;
+	private String geoLocation;
+	private String ipAdress;
+	
+	public Statistics() {	}
+	
+	public Statistics(String timestamp, String browser,
+			String platform, String geoLocation, String ipAdress) { 
+		
+		this.timestamp = timestamp;
+		this.browser = browser;
+		this.platform = platform;
+		this.geoLocation = geoLocation;
+		this.ipAdress = ipAdress;
+		
+	}
+
+	public String getIpAdress() {
+		return ipAdress;
+	}
+
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+	public String getBrowser() {
+		return browser;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public String getGeoLocation() {
+		return geoLocation;
+	}
+	
+	public String toString() {
+		return "browser:"+this.browser+", ipAdress:"+this.ipAdress+", "
+				+ "timestamp:"+this.timestamp+", platform:"+this.platform+", "
+				+ "location:"+this.geoLocation;
 	}
 	
 }

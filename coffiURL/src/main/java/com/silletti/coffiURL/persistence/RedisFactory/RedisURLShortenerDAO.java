@@ -1,13 +1,9 @@
 package com.silletti.coffiURL.persistence.RedisFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 
-import javax.naming.ldap.UnsolicitedNotificationEvent;
 
-import com.silletti.coffiURL.entities.URLObject;
+import com.silletti.coffiURL.entities.Statistics;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
 import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;
@@ -18,8 +14,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
- * Implementazione dell'interfaccia {@link URLShortenerDAOInt} per 
- * il database Redis.
+ * Implementation for the interface {@link URLShortenerDAOInt} for the Redis database.
  * */
 public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 
@@ -33,26 +28,21 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 		}
 	}
 	
-	public Boolean createShortURL(String shortURL, URLObject longURL) {
+	public Boolean addShortURL(String shortURL, String longURL, Boolean isCustom) {
 		
 		String result = null;
+		String result2 = null;
 		try {
-			if (shortURL.isEmpty() || longURL.getURL().isEmpty()) {
+			if (shortURL.isEmpty() || longURL.isEmpty()) {
 				return false;
 			} else {
-				Map<String, String> urlProperties = 
-						new HashMap<String, String>();
-				
-				urlProperties.put(Constants.LONGURL, longURL.getURL());
-				urlProperties.put(Constants.BROWSER, longURL.getBrowser());
-				urlProperties.put(Constants.PLATFORM, longURL.getPlatform());
-				urlProperties.put(Constants.LOCATION, longURL.getGeoLocation());
-				urlProperties.put(Constants.TIMESTAMP, longURL.getTimestamp());
-				urlProperties.put(Constants.IPADRESS, longURL.getIpAdress());
-				urlProperties.put(Constants.NUMOFCLICKS, "0");
-	
 				try{
-				result = client.hmset("su:"+shortURL, urlProperties);
+				result = client.set("su:"+shortURL, longURL);
+				
+				if (!isCustom) {
+					result2 = client.set("lu:"+longURL, shortURL);
+					if (!result2.equals(Constants.DAODONE)) return false;
+				}
 				} catch(DAOException e) {
 					handleExceptions(e, ExceptionsHandler.WARNING);
 				} finally {
@@ -68,70 +58,64 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 		return result.equals(Constants.DAODONE);
 	}
 
-	public URLObject getLongURL(String shortURL) {
+	public String getLongURL(String shortURL) {
 		
-		URLObject result = null;
-		try {
-			if (shortURL.isEmpty()) {
-				return null;
-			} else {
-						
-				try {
-					result = new URLObject(client.hget("su:"+shortURL, Constants.LONGURL),
-							null,  null, null, null, null, null);	
-					System.out.println(result.getURL());
-				} catch(DAOException e) {
-					handleExceptions(e, ExceptionsHandler.WARNING);
-				} finally {
-					client.close();
-				}
-			}
-		} catch (NullPointerException e) {
-			handleExceptions(e, ExceptionsHandler.WARNING);
-		} finally {
-			client.close();
-		}
-			
-		if (result.getURL() == null) {
+		String result = null;
+		if (shortURL.isEmpty()) {
 			return null;
 		} else {
-			return result; 
-		}
+			try {
+				result = client.get("su:"+shortURL);
+			} catch(DAOException e) {
+				handleExceptions(e, ExceptionsHandler.WARNING);
+			} finally {
+				client.close();
+			}
+		} 
+			
+		return result;
 			
 	}
 	
+	public String getPublicURL(String longURL) {
+		
+		String result = null;
+		if (longURL.isEmpty()) {
+			return null;
+		} else {
+			try {
+				result = client.get("lu:"+longURL);
+			} catch(DAOException e) {
+				handleExceptions(e, ExceptionsHandler.WARNING);
+			} finally {
+				client.close();
+			}
+		} 
+			
+		return result;
+	}
 
 	public Boolean updateNumOfClicks(String shortURL) {
-		
-		Long result = null;
-		
-		try {
-			if (shortURL.isEmpty()) {
-				return false;
-			} else {
-				
-				try {
-					result = client.hincrBy("su:"+shortURL, Constants.NUMOFCLICKS, 1);
-				} catch(DAOException e) {
-					handleExceptions(e, ExceptionsHandler.WARNING);
-				} finally {
-					client.close();
-				}
-			}
-		} catch(NullPointerException e) {
-			handleExceptions(e, ExceptionsHandler.WARNING);
-		} finally {
-			client.close();
-		}
-		
-		return result > 0;
-		
+		return null;
 	}
 	
-	public Boolean exist(String shortURL) {
+	public Boolean existShort(String shortURL) {
 		Boolean flag = true;
 		try {
 			flag = client.exists("su:"+shortURL);
+		} catch (Exception e) {
+			handleExceptions(e, ExceptionsHandler.WARNING);
+		} finally {
+			client.close();
+		}
+		
+		return flag;
+	}
+	
+	public Boolean existLong(String longURL) {
+		Boolean flag = true;
+		try {
+			flag = client.exists("lu:"+longURL);
 		} catch (Exception e) {
 			handleExceptions(e, ExceptionsHandler.WARNING);
 		} finally {
@@ -149,6 +133,8 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
         ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
         er.processError(ex.getClass(), ex, t);
     }
+
+	
 	
 
 }

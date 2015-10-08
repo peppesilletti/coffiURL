@@ -15,6 +15,9 @@ public class Constants {
 	public static final String IPADRESS = "ipAdress";
 	public static final String NUMOFCLICKS = "numOfClicks";
 	
+	public static final String MINTIME = "-inf";
+	public static final String MAXTIME = "+inf";
+	
 	public static final Integer LENGTHSHORTURL = 6;
 	
 	//DAO costants

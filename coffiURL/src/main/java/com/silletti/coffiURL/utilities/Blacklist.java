@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
+import com.silletti.coffiURL.exceptionsHandling.exceptions.BlacklistException;
 import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;
 import com.silletti.coffiURL.persistence.BlacklistDAOInt;
 import com.silletti.coffiURL.persistence.DAOFactory;
@@ -108,10 +109,10 @@ private BlacklistDAOInt dao;
 	}
 	
 	/**
-	 * Method for handling the DAO exceptions.
+	 * Method for handling the Blacklist exceptions.
 	 * */
 	private void handleExceptions(final Exception e, final Level t) {
-        DAOException ex = new DAOException(e.getMessage());
+		BlacklistException ex = new BlacklistException(e.getMessage());
         ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
         er.processError(ex.getClass(), ex, t);
     }

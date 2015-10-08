@@ -1,7 +1,18 @@
 package com.silletti.coffiURL.persistence.RedisFactory;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.silletti.coffiURL.entities.Statistics;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
@@ -28,31 +39,30 @@ public class RedisURLStatsDAO implements URLStatsDAOInt {
 		}
 	}
 	
-	public Statistics getURLStats(String shortURL) {
+	public List<String> getURLStats(String shortURL, Long fromTime, Long toTime) {
 		
-		Statistics stats = null;
-		Map<String,String> result = null;
+		List<String> stats = new LinkedList<String>();
 		
 		try {
 			if (shortURL.isEmpty()) {
 				return null;
 	 		} else {
-	 			try {
-	 				result = client.hgetAll("su:"+shortURL);
+	 			try {		
+	 				
+	 				Set<String> items =
+	 						client.zrangeByScore("stats:"+shortURL, fromTime, toTime);
+	 			
+	 				for (String item:items) {
+	 					stats.add(item);
+	 				}
+	 				
 	 			} catch(DAOException e) {
 	 				handleExceptions(e, ExceptionsHandler.WARNING);
-	 			} finally {
+				} finally {
 	 				client.close();
 	 			}
-	 			stats = new Statistics();
-	 			stats.setLongUrl(result.get(Constants.LONGURL));
-	 			stats.setGeoLocation(result.get(Constants.LOCATION));
-	 			stats.setIpAdress(result.get(Constants.IPADRESS));
-	 			stats.setNumOfClicks(result.get(Constants.NUMOFCLICKS));
-	 			stats.setTimestamp(result.get(Constants.TIMESTAMP));
-	 			stats.setPlatform(result.get(Constants.PLATFORM));
-	 			stats.setBrowser(result.get(Constants.BROWSER));
 	 		}
+			
 		} catch(NullPointerException e) {
 			handleExceptions(e, ExceptionsHandler.WARNING);
 		} finally {
@@ -63,6 +73,72 @@ public class RedisURLStatsDAO implements URLStatsDAOInt {
  			
 	}
 	
+	public List<String> getURLStats(String shortURL) {
+		List<String> stats = new LinkedList<String>();
+		
+		try {
+			if (shortURL.isEmpty()) {
+				return null;
+	 		} else {
+	 			try {		
+	 				
+	 				Set<String> items =
+	 						client.zrangeByScore("stats:"+shortURL, "-inf", "+inf");
+	 			
+	 				for (String item:items) {
+	 					stats.add(item);
+	 				}
+	 				
+	 			} catch(DAOException e) {
+	 				handleExceptions(e, ExceptionsHandler.WARNING);
+				} finally {
+	 				client.close();
+	 			}
+	 		}
+			
+		} catch(NullPointerException e) {
+			handleExceptions(e, ExceptionsHandler.WARNING);
+		} finally {
+			client.close();
+		}
+ 		
+		return stats;
+	}
+	
+	public Boolean setURLStats(String shortURL, Statistics stats) {
+		Long result = null;
+		Long result2 = null;
+		
+		try {
+			if (shortURL == null) {
+				return false;
+			} else {
+					
+				try{
+					Date date = new Date();
+					Map<String,Double> s = new HashMap<String,Double>();
+					
+					s.put(stats.toString(), (double)date.getTime());
+					
+					result = client.zadd("stats:"+shortURL, s);
+					//increment number of clicks
+					result2 = client.incr("su:"+shortURL+":clicks");
+					
+				} catch(DAOException e) {
+					handleExceptions(e, ExceptionsHandler.WARNING);
+				} finally {
+					client.close();
+				}
+			}
+		} catch(NullPointerException e) {
+			handleExceptions(e, ExceptionsHandler.WARNING);
+		} finally {
+			client.close();
+		}
+			
+		return result > 0 && result2 > 0;
+	}
+	
 	/**
 	 * Method for handling the DAO exceptions.
 	 * */
@@ -71,5 +147,9 @@ public class RedisURLStatsDAO implements URLStatsDAOInt {
         ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
         er.processError(ex.getClass(), ex, t);
     }
+
+	
+
+
 
 }

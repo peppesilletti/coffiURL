@@ -1,6 +1,6 @@
 package com.silletti.coffiURL.core;
 
-import com.silletti.coffiURL.entities.URLObject;
+import com.silletti.coffiURL.entities.Statistics;
 
 /**
  * Interface for the URL shortener engine, for handling and 
@@ -15,7 +15,7 @@ public interface URLShortenerEngineInt {
 	 * @return
 	 * 		generated shortURL.
 	 * */
-	public String generateShortURL(URLObject longURL);
+	public String generateShortURL(String longURL);
 	
 	/**
 	 * Method for insering a custom shortURL.
@@ -26,7 +26,7 @@ public interface URLShortenerEngineInt {
 	 * @return 
 	 * 		result of the operation.
 	 * */
-	public Boolean createCustomURL(String shortURL, URLObject longURL);
+	public Boolean createCustomURL(String shortURL, String longURL);
 	
 	/**
 	 * Method for getting the longURL from the database.
