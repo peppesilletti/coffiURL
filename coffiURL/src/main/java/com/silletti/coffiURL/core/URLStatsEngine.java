@@ -1,8 +1,10 @@
 package com.silletti.coffiURL.core;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,6 +41,7 @@ public class URLStatsEngine implements URLStatsEngineInt {
 	public Map<String, Integer> getStats(String shortURL, Long fromTime, Long toTime) {
 		
 		Map<String, Integer> stat = new HashMap<String, Integer>();
+		Set<String> ips = new HashSet<String>();
 		
 		if (shortURL.isEmpty() || fromTime == null || toTime == null) {
 			return null;
@@ -53,8 +56,14 @@ public class URLStatsEngine implements URLStatsEngineInt {
 			for (String s:stats) {
 				Matcher m = Pattern.compile("(\\w+):(\\w+|\\([^)]*\\))").matcher(s);
 				
+				
 				while (m.find()) {
 					String key = m.group(2);
+					
+					if (key.equals(Constants.IPADRESS)) {
+						ips.add(key);
+					}
+					
 					if (stat.containsKey(key) 
 							&& !key.equals(Constants.TIMESTAMP)
 							&& !key.equals(Constants.IPADRESS)) {
@@ -67,13 +76,14 @@ public class URLStatsEngine implements URLStatsEngineInt {
 			}
 			
 		}
-		
+		stat.put("ips", ips.size());
 		return stat;
 	}
 	
 	public Map<String, Integer> getStats(String shortURL) {
 		
 		Map<String, Integer> stat = new HashMap<String, Integer>();
+		Set<String> ips = new HashSet<String>();
 		
 		if (shortURL.isEmpty()) {
 			return null;
@@ -88,8 +98,14 @@ public class URLStatsEngine implements URLStatsEngineInt {
 			for (String s:stats) {
 				Matcher m = Pattern.compile("(\\w+):(\\w+|\\([^)]*\\))").matcher(s);
 				
+				
 				while (m.find()) {
 					String key = m.group(2);
+					
+					if (key.equals(Constants.IPADRESS)) {
+						ips.add(key);
+					}
+					
 					if (stat.containsKey(key) 
 							&& !key.equals(Constants.TIMESTAMP)
 							&& !key.equals(Constants.IPADRESS)) {
@@ -102,6 +118,8 @@ public class URLStatsEngine implements URLStatsEngineInt {
 				
 			}
 		}
+		
+		stat.put("ips", ips.size());
 		
 		return stat;
 	}

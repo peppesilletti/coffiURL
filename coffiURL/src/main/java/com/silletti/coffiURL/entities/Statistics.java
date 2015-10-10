@@ -1,9 +1,7 @@
 package com.silletti.coffiURL.entities;
 
-import java.io.Serializable;
-
 /**
- * Bean class for the url object.
+ * POJO class for the url object.
  * */
 public class Statistics {
 
@@ -27,7 +25,6 @@ public class Statistics {
 		this.ipAdress = ipAdress;
 	}
 
-	private static final long serialVersionUID = 1L;
 	private String timestamp;
 	private String browser;
 	private String platform;
