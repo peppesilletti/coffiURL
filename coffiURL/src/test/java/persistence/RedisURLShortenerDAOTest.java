@@ -10,14 +10,14 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.silletti.coffiURL.entities.Statistics;
+import com.silletti.coffiURL.entities.URLInfo;
 import com.silletti.coffiURL.persistence.RedisFactory.RedisURLShortenerDAO;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RedisURLShortenerDAOTest {
 
 	private RedisURLShortenerDAO test;
-	private Statistics url;
+	private URLInfo url;
 	private String shortURL;
 	
 	@Before

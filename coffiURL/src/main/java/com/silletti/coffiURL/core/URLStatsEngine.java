@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.silletti.coffiURL.entities.Statistics;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
 import com.silletti.coffiURL.exceptionsHandling.exceptions.URLStatsEngineException;
@@ -38,92 +39,105 @@ public class URLStatsEngine implements URLStatsEngineInt {
 		}
 	}
 	
-	public Map<String, Integer> getStats(String shortURL, Long fromTime, Long toTime) {
-		
-		Map<String, Integer> stat = new HashMap<String, Integer>();
-		Set<String> ips = new HashSet<String>();
+	public Statistics getStats(String shortURL, Long fromTime, Long toTime) {
 		
 		if (shortURL.isEmpty() || fromTime == null || toTime == null) {
 			return null;
 		}
 		
-		
 		if (!shortener.existShort(shortURL)) {
 			return null;
 		} else {
-			List<String> stats = dao.getURLStats(shortURL);
-
-			for (String s:stats) {
-				Matcher m = Pattern.compile("(\\w+):(\\w+|\\([^)]*\\))").matcher(s);
-				
-				
-				while (m.find()) {
-					String key = m.group(2);
-					
-					if (key.equals(Constants.IPADRESS)) {
-						ips.add(key);
-					}
-					
-					if (stat.containsKey(key) 
-							&& !key.equals(Constants.TIMESTAMP)
-							&& !key.equals(Constants.IPADRESS)) {
-						int value = stat.get(key);
-						stat.put(key, value + 1);
-					} else {
-						stat.put(key, 1);
-					}
-				}	
-			}
-			
+			List<String> stats = dao.getURLStats(shortURL, fromTime, toTime);
+			return aggregateStatistics(stats);
 		}
-		stat.put("ips", ips.size());
-		return stat;
+	
 	}
 	
-	public Map<String, Integer> getStats(String shortURL) {
-		
-		Map<String, Integer> stat = new HashMap<String, Integer>();
-		Set<String> ips = new HashSet<String>();
-		
+	public Statistics getStats(String shortURL) {
 		if (shortURL.isEmpty()) {
 			return null;
 		}
 		
-		//check if URL exist
 		if (!shortener.existShort(shortURL)) {
 			return null;
 		} else {
 			List<String> stats = dao.getURLStats(shortURL);
+			return aggregateStatistics(stats);
+		}
+	}
 
-			for (String s:stats) {
-				Matcher m = Pattern.compile("(\\w+):(\\w+|\\([^)]*\\))").matcher(s);
+	
+	private Statistics aggregateStatistics(List<String> statsList) {
+		
+		Map<String, Integer> browsers = new HashMap<String, Integer>();
+		Map<String, Integer> platforms = new HashMap<String, Integer>();
+		Map<String, Integer> locations = new HashMap<String, Integer>();
+		Map<String, Integer> others = new HashMap<String, Integer>();
+		
+		Set<String> ips = new HashSet<String>();
+		Statistics stats = new Statistics();
+		
+		Integer numOfClicks = 0;
+		
+		for (String s:statsList) {
+			Matcher m = Pattern.compile("(\\w+):(\\w+|\\([^)]*\\))").matcher(s);
+			
+			while (m.find()) {
 				
+				String key = m.group(1);
+				String value = m.group(2);
 				
-				while (m.find()) {
-					String key = m.group(2);
+				if (key.equals(Constants.IPADRESS)) {
+					ips.add(value);
+				}
+				
+				if (key.equals(Constants.BROWSER)) {
 					
-					if (key.equals(Constants.IPADRESS)) {
-						ips.add(key);
-					}
-					
-					if (stat.containsKey(key) 
-							&& !key.equals(Constants.TIMESTAMP)
-							&& !key.equals(Constants.IPADRESS)) {
-						int value = stat.get(key);
-						stat.put(key, value + 1);
+					if (browsers.containsKey(value)) {
+						int currentValue = browsers.get(value);
+						browsers.put(value, currentValue + 1);
 					} else {
-						stat.put(key, 1);
+						browsers.put(value, 1);
 					}
+					
+				} else if (key.equals(Constants.PLATFORM)) {
+					
+					if (platforms.containsKey(value)) {
+						int currentValue = platforms.get(value);
+						platforms.put(value, currentValue + 1);
+					} else {
+						platforms.put(value, 1);
+					}
+					
+				} else if (key.equals(Constants.LOCATION)) {
+					
+					if (locations.containsKey(value)) {
+						int currentValue = locations.get(value);
+						locations.put(value, currentValue + 1);
+					} else {
+						locations.put(value, 1);
+					}
+					
 				}
 				
 			}
+			
+			numOfClicks++;
+			
 		}
 		
-		stat.put("ips", ips.size());
+		others.put(Constants.IPADRESS, ips.size());
+		others.put(Constants.NUMOFCLICKS, numOfClicks);
 		
-		return stat;
+		stats.addStatistic(Constants.BROWSER, browsers);
+		stats.addStatistic(Constants.LOCATION, locations);
+		stats.addStatistic(Constants.PLATFORM, platforms);
+		stats.addStatistic("others", others);
+		
+		return stats;
 	}
-
+	
 	/**
 	 * Method for handling the URLStatsEngine exceptions.
 	 * */
@@ -132,5 +146,6 @@ public class URLStatsEngine implements URLStatsEngineInt {
         ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
         er.processError(ex.getClass(), ex, t);
     }
+	
 
 }

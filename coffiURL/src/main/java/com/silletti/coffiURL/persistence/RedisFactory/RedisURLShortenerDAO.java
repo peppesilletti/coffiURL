@@ -3,11 +3,12 @@ package com.silletti.coffiURL.persistence.RedisFactory;
 import java.util.logging.Level;
 
 
-import com.silletti.coffiURL.entities.Statistics;
+import com.silletti.coffiURL.entities.URLInfo;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
 import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
+import com.silletti.coffiURL.utilities.Chiper;
 import com.silletti.coffiURL.utilities.Constants;
 
 import redis.clients.jedis.Jedis;
@@ -37,10 +38,10 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 				return false;
 			} else {
 				try{
-				result = client.set("su:"+shortURL, longURL);
+				result = client.set(Chiper.cipher("su:"+shortURL), longURL);
 				
 				if (!isCustom) {
-					result2 = client.set("lu:"+longURL, shortURL);
+					result2 = client.set(Chiper.cipher("lu:"+longURL), shortURL);
 					if (!result2.equals(Constants.DAODONE)) return false;
 				}
 				} catch(DAOException e) {
@@ -65,7 +66,7 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 			return null;
 		} else {
 			try {
-				result = client.get("su:"+shortURL);
+				result = client.get(Chiper.cipher("su:"+shortURL));
 			} catch(DAOException e) {
 				handleExceptions(e, ExceptionsHandler.WARNING);
 			} finally {
@@ -84,7 +85,7 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 			return null;
 		} else {
 			try {
-				result = client.get("lu:"+longURL);
+				result = client.get(Chiper.cipher("lu:"+longURL));
 			} catch(DAOException e) {
 				handleExceptions(e, ExceptionsHandler.WARNING);
 			} finally {
@@ -102,7 +103,7 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 	public Boolean existShort(String shortURL) {
 		Boolean flag = true;
 		try {
-			flag = client.exists("su:"+shortURL);
+			flag = client.exists(Chiper.cipher("su:"+shortURL));
 		} catch (Exception e) {
 			handleExceptions(e, ExceptionsHandler.WARNING);
 		} finally {
@@ -115,7 +116,7 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
 	public Boolean existLong(String longURL) {
 		Boolean flag = true;
 		try {
-			flag = client.exists("lu:"+longURL);
+			flag = client.exists(Chiper.cipher("lu:"+longURL));
 		} catch (Exception e) {
 			handleExceptions(e, ExceptionsHandler.WARNING);
 		} finally {

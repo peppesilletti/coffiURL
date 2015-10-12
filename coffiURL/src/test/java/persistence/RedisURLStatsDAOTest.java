@@ -8,19 +8,19 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.silletti.coffiURL.entities.Statistics;
+import com.silletti.coffiURL.entities.URLInfo;
 import com.silletti.coffiURL.persistence.RedisFactory.RedisURLStatsDAO;
 
 public class RedisURLStatsDAOTest {
 
 	private RedisURLStatsDAO test;
-	private Statistics stats;
+	private URLInfo stats;
 	
 	@Before
 	public void setUp() throws Exception {
 		Date d = new Date();
 		test = new RedisURLStatsDAO();	
-		stats = new Statistics(String.valueOf(d.getTime()), 
+		stats = new URLInfo(String.valueOf(d.getTime()), 
 				"Mozilla", "Linux", "IT", "127.32.32.652");
 	}
 

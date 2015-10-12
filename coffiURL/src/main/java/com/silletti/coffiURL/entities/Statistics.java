@@ -1,73 +1,23 @@
 package com.silletti.coffiURL.entities;
 
-/**
- * POJO class for the url object.
- * */
+import java.util.HashMap;
+import java.util.Map;
+
+import com.silletti.coffiURL.utilities.Constants;
+
 public class Statistics {
-
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public void setPlatform(String platform) {
-		this.platform = platform;
-	}
-
-	public void setGeoLocation(String geoLocation) {
-		this.geoLocation = geoLocation;
-	}
-
-	public void setIpAdress(String ipAdress) {
-		this.ipAdress = ipAdress;
-	}
-
-	private String timestamp;
-	private String browser;
-	private String platform;
-	private String geoLocation;
-	private String ipAdress;
+	Map<String, Map<String, Integer>> statistics;
 	
-	public Statistics() {	}
-	
-	public Statistics(String timestamp, String browser,
-			String platform, String geoLocation, String ipAdress) { 
+	public Statistics() {
 		
-		this.timestamp = timestamp;
-		this.browser = browser;
-		this.platform = platform;
-		this.geoLocation = geoLocation;
-		this.ipAdress = ipAdress;
-		
-	}
-
-	public String getIpAdress() {
-		return ipAdress;
-	}
-
-	public String getTimestamp() {
-		return timestamp;
-	}
-
-	public String getBrowser() {
-		return browser;
-	}
-
-	public String getPlatform() {
-		return platform;
-	}
-
-	public String getGeoLocation() {
-		return geoLocation;
+		statistics = new HashMap<String, Map<String,Integer>>();
 	}
 	
-	public String toString() {
-		return "browser:"+this.browser+", ipAdress:"+this.ipAdress+", "
-				+ "timestamp:"+this.timestamp+", platform:"+this.platform+", "
-				+ "location:"+this.geoLocation;
+	public Map<String, Map<String, Integer>> getStatistics() {
+		return statistics;
 	}
 	
+	public void addStatistic(String type, Map<String, Integer> s) {
+		this.statistics.put(type, s);
+	}
 }

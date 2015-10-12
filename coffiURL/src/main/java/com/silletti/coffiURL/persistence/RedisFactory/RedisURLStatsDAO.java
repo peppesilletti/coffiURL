@@ -10,11 +10,12 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.silletti.coffiURL.entities.Statistics;
+import com.silletti.coffiURL.entities.URLInfo;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
 import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;
 import com.silletti.coffiURL.persistence.URLStatsDAOInt;
+import com.silletti.coffiURL.utilities.Chiper;
 import com.silletti.coffiURL.utilities.Constants;
 
 import redis.clients.jedis.Jedis;
@@ -46,7 +47,7 @@ public class RedisURLStatsDAO implements URLStatsDAOInt {
 	 			try {		
 	 				
 	 				Set<String> items =
-	 						client.zrangeByScore("stats:"+shortURL, fromTime, toTime);
+	 						client.zrangeByScore(Chiper.cipher("stats:"+shortURL), fromTime, toTime);
 	 			
 	 				for (String item:items) {
 	 					stats.add(item);
@@ -79,7 +80,7 @@ public class RedisURLStatsDAO implements URLStatsDAOInt {
 	 			try {		
 	 				
 	 				Set<String> items =
-	 						client.zrangeByScore("stats:"+shortURL, "-inf", "+inf");
+	 						client.zrangeByScore(Chiper.cipher("stats:"+shortURL), "-inf", "+inf");
 	 			
 	 				for (String item:items) {
 	 					stats.add(item);
@@ -101,7 +102,7 @@ public class RedisURLStatsDAO implements URLStatsDAOInt {
 		return stats;
 	}
 	
-	public Boolean setURLStats(String shortURL, Statistics stats) {
+	public Boolean setURLStats(String shortURL, URLInfo stats) {
 		Long result = null;
 		Long result2 = null;
 		
@@ -116,9 +117,9 @@ public class RedisURLStatsDAO implements URLStatsDAOInt {
 					
 					s.put(stats.toString(), (double)date.getTime());
 					
-					result = client.zadd("stats:"+shortURL, s);
+					result = client.zadd(Chiper.cipher("stats:"+shortURL), s);
 					//increment number of clicks
-					result2 = client.incr("su:"+shortURL+":clicks");
+					result2 = client.incr(Chiper.cipher("su:"+shortURL+":clicks"));
 					
 				} catch(DAOException e) {
 					handleExceptions(e, ExceptionsHandler.WARNING);

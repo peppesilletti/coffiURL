@@ -1,6 +1,6 @@
 package com.silletti.coffiURL.persistence;
 
-import com.silletti.coffiURL.entities.Statistics;
+import com.silletti.coffiURL.entities.URLInfo;
 
 /**
  *  * URLShortener DAO. 

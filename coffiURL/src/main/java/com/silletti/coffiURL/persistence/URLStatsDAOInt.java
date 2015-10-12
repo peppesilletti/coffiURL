@@ -2,8 +2,8 @@ package com.silletti.coffiURL.persistence;
 
 import java.util.List;
 
-import com.silletti.coffiURL.entities.Statistics;
-import com.silletti.coffiURL.entities.Statistics;
+import com.silletti.coffiURL.entities.URLInfo;
+import com.silletti.coffiURL.entities.URLInfo;
 
 /**
  * URLStats entity DAO.
@@ -18,7 +18,7 @@ public interface URLStatsDAOInt {
 	 * @return
 	 * 		result of operation
 	 * */
-	public Boolean setURLStats(String shortURL, Statistics stats);
+	public Boolean setURLStats(String shortURL, URLInfo stats);
 	
 	/**
 	 * Get the statistics for an URL.

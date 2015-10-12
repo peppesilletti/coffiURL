@@ -6,6 +6,7 @@ import com.silletti.coffiURL.exceptionsHandling.exceptions.URLShortenerEngineExc
 import com.silletti.coffiURL.persistence.DAOFactory;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 import com.silletti.coffiURL.utilities.Blacklist;
+import com.silletti.coffiURL.utilities.Chiper;
 import com.silletti.coffiURL.utilities.Constants;
 
 import java.util.logging.Level;
@@ -36,9 +37,9 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 		
 		String shortURL = null;
 		
-		if (!longURL.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*")) {
+		if (!longURL.matches("^(http(s{0,1})://)?(www.)?[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*")) {
 			return null;
-		}
+		} 
 		
 		if (dao.existLong(longURL)) { //check if for the longURL exist already a public shortURL.
 			shortURL = dao.getPublicURL(longURL);
@@ -60,7 +61,7 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 
 	public Boolean createCustomURL(String shortURL, String longURL) {
 		
-		if (longURL.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*") 
+		if (!longURL.matches("^(http(s{0,1})://)?(www.)?[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*") 
 				|| !shortURL.matches("^[-a-zA-Z0-9+]*$")) {
 			return false;
 		}

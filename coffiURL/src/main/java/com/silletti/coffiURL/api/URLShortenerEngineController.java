@@ -1,14 +1,15 @@
 package com.silletti.coffiURL.api;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.silletti.coffiURL.core.URLShortenerEngine;
@@ -75,16 +76,9 @@ public class URLShortenerEngineController {
     	
     }
     
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    public @ResponseBody JSONResponse<String> missingParam(MissingServletRequestParameterException e) {
-    	return new JSONResponse<String>("Missing input, please insert it.", 
-    			HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-    }
- 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public @ResponseBody JSONResponse<String> invalidParam(IllegalArgumentException e) {
-    	return new JSONResponse<String>("Invalid input, please change.", 
-    			HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-    } 
+    @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestParameterException.class})
+	void handleIllegalArgumentException(HttpServletResponse response) throws IOException {
+	    response.sendError(HttpStatus.BAD_REQUEST.value(), "Please try again and insert all requested parameters");
+	}
 }
 ;
