@@ -1,5 +1,7 @@
 package com.silletti.coffiURL.entities;
 
+import java.util.Date;
+
 /**
  * POJO class for the url object.
  * */
@@ -11,43 +13,28 @@ public class URLInfo {
 	private String geoLocation;
 	private String ipAdress;
 	
-	public URLInfo() {	}
+	public URLInfo() {	
+		Date date = new Date();
+		this.timestamp = String.valueOf(date.getTime());
+	}
 	
-	public URLInfo(String timestamp, String browser,
+	public URLInfo(String browser,
 			String platform, String geoLocation, String ipAdress) { 
 		
-		this.timestamp = timestamp;
+		Date date = new Date();
+		this.timestamp = String.valueOf(date.getTime());
+		
 		this.browser = browser;
 		this.platform = platform;
 		this.geoLocation = geoLocation;
 		this.ipAdress = ipAdress;
 		
-	}
-	
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public void setPlatform(String platform) {
-		this.platform = platform;
-	}
-
-	public void setGeoLocation(String geoLocation) {
-		this.geoLocation = geoLocation;
-	}
-
-	public void setIpAdress(String ipAdress) {
-		this.ipAdress = ipAdress;
 	}
 
 	public String getIpAdress() {
 		return ipAdress;
 	}
-
+	
 	public String getTimestamp() {
 		return timestamp;
 	}

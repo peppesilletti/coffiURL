@@ -20,8 +20,7 @@ public class RedisURLStatsDAOTest {
 	public void setUp() throws Exception {
 		Date d = new Date();
 		test = new RedisURLStatsDAO();	
-		stats = new URLInfo(String.valueOf(d.getTime()), 
-				"Mozilla", "Linux", "IT", "127.32.32.652");
+		stats = new URLInfo("Mozilla", "Linux", "IT", "127.32.32.652");
 	}
 
 	@Test

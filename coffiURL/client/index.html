@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- AngularJS library -->
+<script src="./js/angular.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Insert title here</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="./css/bootstrap.css">
+
+
+</head>
+<body>
+
+<div ng-app="coffiURL" ng-controller="urlForm" ng-init="shortURL='prova1'">
+
+	<form>
+	
+		Long URL:<br>
+		<input type="text" ng-model="url.longURL"><br>
+		Custom short URL:<br>
+		<input type="text" ng-model="url.shortURL"><br>
+		<br><br>
+		<button ng-clic="send()">SEND</button>
+	
+	</form>
+	
+	<p>form = {{url}}</p>
+
+</div>
+
+<script src="./js/core/coffiURL.js"></script>
+
+</body>
+</html>

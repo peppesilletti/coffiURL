@@ -1,7 +1,5 @@
 package com.silletti.coffiURL.core;
 
-import com.silletti.coffiURL.entities.URLInfo;
-
 /**
  * Interface for the URL shortener engine, for handling and 
  * generation of short urls.

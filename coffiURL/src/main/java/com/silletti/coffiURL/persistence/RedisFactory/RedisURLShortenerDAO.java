@@ -3,7 +3,6 @@ package com.silletti.coffiURL.persistence.RedisFactory;
 import java.util.logging.Level;
 
 
-import com.silletti.coffiURL.entities.URLInfo;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
 import com.silletti.coffiURL.exceptionsHandling.exceptions.DAOException;

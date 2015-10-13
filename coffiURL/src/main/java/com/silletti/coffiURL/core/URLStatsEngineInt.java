@@ -25,4 +25,14 @@ public interface URLStatsEngineInt {
 	 * */
 	public Statistics getStats(String shortURL);
 	
+	/**
+	 * Method for adding statistics of a shortURL.
+	 * @param
+	 * 		shortURL for statistics
+	 * @Return
+	 * 		Result of operation
+	 * 
+	 * */
+	public Boolean addStats(String shortURL);
+	
 }

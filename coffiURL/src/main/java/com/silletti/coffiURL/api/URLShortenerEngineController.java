@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.silletti.coffiURL.core.URLShortenerEngine;
@@ -22,7 +23,7 @@ import com.silletti.coffiURL.json.JSONResponse;
 public class URLShortenerEngineController {
 
     @RequestMapping(method = RequestMethod.GET) 
-    public JSONResponse<URLObject> getURL(
+    public @ResponseBody JSONResponse<URLObject> getURL(
     		@RequestParam(value="url") String url) 
     				throws MissingServletRequestParameterException {
     	

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.silletti.coffiURL.core.URLStatsEngine;
@@ -22,7 +23,7 @@ import com.silletti.coffiURL.json.JSONResponse;
 public class URLStatsEngineController {
 
 	@RequestMapping(method = RequestMethod.GET)
-	public JSONResponse<Statistics> getStats(
+	public @ResponseBody JSONResponse<Statistics> getStats(
 			@RequestParam(value = "shortURL") String shortURL,
 			@RequestParam(value = "fromTime", defaultValue = "") String fromTime,
 			@RequestParam(value = "toTime", defaultValue = "") String toTime)

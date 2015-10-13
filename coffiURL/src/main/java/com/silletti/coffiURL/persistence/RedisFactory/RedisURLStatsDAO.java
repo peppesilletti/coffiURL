@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.silletti.coffiURL.entities.URLInfo;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
@@ -115,7 +113,8 @@ public class RedisURLStatsDAO implements URLStatsDAOInt {
 					Date date = new Date();
 					Map<String,Double> s = new HashMap<String,Double>();
 					
-					s.put(stats.toString(), (double)date.getTime());
+					//Save a string filled with stats, that have as key the timestamp.
+					s.put(stats.toString(), Double.valueOf(stats.getTimestamp()));
 					
 					result = client.zadd(Chiper.cipher("stats:"+shortURL), s);
 					//increment number of clicks

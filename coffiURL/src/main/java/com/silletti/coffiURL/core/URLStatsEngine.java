@@ -138,6 +138,31 @@ public class URLStatsEngine implements URLStatsEngineInt {
 		return stats;
 	}
 	
+	
+	public Boolean addStats(String shortURL) {
+		Boolean result = false;
+		
+		if (shortURL.isEmpty() || shortURL == null) {
+			return false;
+		}
+		
+		if (!shortener.existShort(shortURL)) {
+			return false;
+		}
+		
+		/*
+		 * if (shortURL è vuoto || shortURL null || shortURL non esiste)
+		 * {return false;}
+		 * URLInfo info = new URLInfo(shortURL);
+		 * 
+		 * return dao.aggiungistats(info);
+		 * 
+		 * */
+		
+		return result;
+	}
+	
+	
 	/**
 	 * Method for handling the URLStatsEngine exceptions.
 	 * */
@@ -146,6 +171,8 @@ public class URLStatsEngine implements URLStatsEngineInt {
         ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
         er.processError(ex.getClass(), ex, t);
     }
+
+	
 	
 
 }

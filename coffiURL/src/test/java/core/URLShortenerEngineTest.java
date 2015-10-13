@@ -6,8 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.silletti.coffiURL.core.URLShortenerEngine;
-import com.silletti.coffiURL.entities.URLInfo;
-import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 
 public class URLShortenerEngineTest {
 
