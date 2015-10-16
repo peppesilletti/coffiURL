@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.silletti.coffiURL.entities.Statistics;
+import com.silletti.coffiURL.entities.URLInfo;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandler;
 import com.silletti.coffiURL.exceptionsHandling.ExceptionsHandlerInt;
 import com.silletti.coffiURL.exceptionsHandling.exceptions.URLStatsEngineException;
@@ -17,6 +18,10 @@ import com.silletti.coffiURL.persistence.DAOFactory;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 import com.silletti.coffiURL.persistence.URLStatsDAOInt;
 import com.silletti.coffiURL.utilities.Constants;
+
+import net.sf.uadetector.ReadableUserAgent;
+import net.sf.uadetector.UserAgentStringParser;
+import net.sf.uadetector.service.UADetectorServiceFactory;
 
 /**
  * Implementation of the interface {@link URLStatsEngineInt}.
@@ -127,7 +132,7 @@ public class URLStatsEngine implements URLStatsEngineInt {
 			
 		}
 		
-		others.put(Constants.IPADRESS, ips.size());
+		others.put("distinctIpAdresses", ips.size());
 		others.put(Constants.NUMOFCLICKS, numOfClicks);
 		
 		stats.addStatistic(Constants.BROWSER, browsers);
@@ -139,27 +144,19 @@ public class URLStatsEngine implements URLStatsEngineInt {
 	}
 	
 	
-	public Boolean addStats(String shortURL) {
+	public Boolean addStats(String shortURL, URLInfo info) {
 		Boolean result = false;
 		
-		if (shortURL.isEmpty() || shortURL == null) {
+		if (shortURL.isEmpty() || shortURL == null
+				|| info == null) {
 			return false;
 		}
 		
 		if (!shortener.existShort(shortURL)) {
 			return false;
+		} else {
+			return dao.setURLStats(shortURL, info);
 		}
-		
-		/*
-		 * if (shortURL è vuoto || shortURL null || shortURL non esiste)
-		 * {return false;}
-		 * URLInfo info = new URLInfo(shortURL);
-		 * 
-		 * return dao.aggiungistats(info);
-		 * 
-		 * */
-		
-		return result;
 	}
 	
 	

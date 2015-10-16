@@ -3,13 +3,14 @@
 <!-- AngularJS library -->
 <script src="./js/angular.min.js"></script>
 <script src="./js/bootstrap.min.js"></script>
+<script src="./js/jquery-2.1.4.min.js"></script>
 
 <head>
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Insert title here</title>
+<title>coffiURL - The URL shortener</title>
 
 <!-- Bootstrap -->
 <link rel="stylesheet" href="./css/bootstrap.css">
@@ -18,20 +19,16 @@
 </head>
 <body>
 
-<div ng-app="coffiURL" ng-controller="urlForm" ng-init="shortURL='prova1'">
+<div ng-app="coffiURL" ng-controller="urlForm" class="container">
 
-	<form>
-	
-		Long URL:<br>
-		<input type="text" ng-model="url.longURL"><br>
-		Custom short URL:<br>
-		<input type="text" ng-model="url.shortURL"><br>
-		<br><br>
-		<button ng-clic="send()">SEND</button>
-	
-	</form>
-	
-	<p>form = {{url}}</p>
+<h1>coffiURL - The short urlener</h1>
+
+<form ng-submit="send()">
+    Long URL: <input ng-model="longURL"/>
+    <button type="submit">Short it!</button>
+</form>
+
+<span ng-bind = "shortURL"> </span>
 
 </div>
 

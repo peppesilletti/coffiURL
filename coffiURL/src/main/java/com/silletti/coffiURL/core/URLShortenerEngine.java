@@ -6,13 +6,13 @@ import com.silletti.coffiURL.exceptionsHandling.exceptions.URLShortenerEngineExc
 import com.silletti.coffiURL.persistence.DAOFactory;
 import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 import com.silletti.coffiURL.utilities.Blacklist;
-import com.silletti.coffiURL.utilities.Chiper;
 import com.silletti.coffiURL.utilities.Constants;
+
+import org.apache.commons.validator.routines.UrlValidator;
 
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Implementation of the interface {@link URLShortenerEngineInt}.
@@ -36,33 +36,43 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
 	public String generateShortURL(String longURL) {
 		
 		String shortURL = null;
+		UrlValidator validator = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
 		
-		if (!longURL.matches("^(http(s{0,1})://)?(www.)?[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*")) {
-			return null;
-		} 
+		if (!validator.isValid(longURL)) {
+			longURL = "http://"+longURL; //add http for standard if any protocol is set
+			if (!validator.isValid(longURL)) { //check if adding the protocol is still valid
+				return null;
+			}
+		}
 		
 		if (dao.existLong(longURL)) { //check if for the longURL exist already a public shortURL.
 			shortURL = dao.getPublicURL(longURL);
-			
-			return shortURL;
 		} else {
 		
-			do {
+			do { //generate a random url
 				shortURL = RandomStringUtils.randomAlphabetic(
 						Constants.LENGTHSHORTURL);
 				
 				dao.addShortURL(shortURL, longURL, false);
 				
 			} while (!dao.existShort(shortURL) || bl.hasBadWord(shortURL));
-			
-			return shortURL;
 		}
+		
+		return shortURL;
 	}
 
 	public Boolean createCustomURL(String shortURL, String longURL) {
 		
-		if (!longURL.matches("^(http(s{0,1})://)?(www.)?[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*") 
-				|| !shortURL.matches("^[-a-zA-Z0-9+]*$")) {
+		UrlValidator validator = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
+		
+		if (!validator.isValid(longURL)) {
+			longURL = "http://"+longURL; //add http for standard if any protocol is set
+			if (!validator.isValid(longURL)) { //check if adding the protocol is still valid
+				return null;
+			}
+		}
+		
+		if (!shortURL.matches("^[-a-zA-Z0-9+]*$")) {
 			return false;
 		}
 		
@@ -101,5 +111,5 @@ public class URLShortenerEngine implements URLShortenerEngineInt {
         ExceptionsHandlerInt er = ExceptionsHandler.getIstance();
         er.processError(ex.getClass(), ex, t);
     }
-
+	
 }

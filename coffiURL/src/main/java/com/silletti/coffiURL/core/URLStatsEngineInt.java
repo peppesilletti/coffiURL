@@ -3,6 +3,7 @@ package com.silletti.coffiURL.core;
 import java.util.Map;
 
 import com.silletti.coffiURL.entities.Statistics;
+import com.silletti.coffiURL.entities.URLInfo;
 
 
 public interface URLStatsEngineInt {
@@ -28,11 +29,12 @@ public interface URLStatsEngineInt {
 	/**
 	 * Method for adding statistics of a shortURL.
 	 * @param
-	 * 		shortURL for statistics
+	 * 		shortURL for statistic
+	 * 		userAgent informations about the user agent request.
 	 * @Return
 	 * 		Result of operation
 	 * 
 	 * */
-	public Boolean addStats(String shortURL);
+	public Boolean addStats(String shortURL, URLInfo info);
 	
 }

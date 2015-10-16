@@ -24,7 +24,7 @@ public class URLShortenerEngineController {
 
     @RequestMapping(method = RequestMethod.GET) 
     public @ResponseBody JSONResponse<URLObject> getURL(
-    		@RequestParam(value="url") String url) 
+    		@RequestParam(value="shortURL") String url) 
     				throws MissingServletRequestParameterException {
     	
     	if (url.isEmpty()) {
@@ -45,7 +45,7 @@ public class URLShortenerEngineController {
     }
     
     @RequestMapping(method = RequestMethod.POST, produces = "application/json") 
-    public JSONResponse<URLObject> addNewURL( 
+    public @ResponseBody JSONResponse<URLObject> addNewURL( 
     		@RequestParam(value = "longURL") String longURL,
     		@RequestParam(value = "shortURL", defaultValue = "") String shortURL)
     				throws MissingServletRequestParameterException {
