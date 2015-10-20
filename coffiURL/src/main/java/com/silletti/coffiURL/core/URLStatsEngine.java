@@ -19,8 +19,6 @@ import com.silletti.coffiURL.persistence.URLShortenerDAOInt;
 import com.silletti.coffiURL.persistence.URLStatsDAOInt;
 import com.silletti.coffiURL.utilities.Constants;
 
-import net.sf.uadetector.ReadableUserAgent;
-import net.sf.uadetector.UserAgentStringParser;
 import net.sf.uadetector.service.UADetectorServiceFactory;
 
 /**

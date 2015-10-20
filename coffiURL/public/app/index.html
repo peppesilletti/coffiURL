@@ -13,19 +13,19 @@
 <title>coffiURL - The URL shortener</title>
 
 <!-- Bootstrap -->
-<link rel="stylesheet" href="./css/bootstrap.css">
+<link rel="stylesheet" href="./css/bootstrap.min.css">
 
 
 </head>
 <body>
 
-<div ng-app="coffiURL" ng-controller="urlForm" class="container">
+<div ng-app="coffiURL" ng-controller="urlCtrl" class="container">
 
 <h1>coffiURL - The short urlener</h1>
 
-<form ng-submit="send()">
-    Long URL: <input ng-model="longURL"/>
-    <button type="submit">Short it!</button>
+<form name="urlForm" ng-submit="send()">
+    <label> Long URL: </label> <input ng-model="longURL" />
+    <input type="submit" value="Submit" />
 </form>
 
 <span ng-bind = "shortURL"> </span>
