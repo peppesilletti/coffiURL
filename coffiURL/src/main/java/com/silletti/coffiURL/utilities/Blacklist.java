@@ -117,5 +117,4 @@ private BlacklistDAOInt dao;
         er.processError(ex.getClass(), ex, t);
     }
 	
-	
 }

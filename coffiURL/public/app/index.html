@@ -1,38 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
-<!-- AngularJS library -->
-<script src="./js/angular.min.js"></script>
-<script src="./js/bootstrap.min.js"></script>
-<script src="./js/jquery-2.1.4.min.js"></script>
-
-<head>
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>coffiURL - The URL shortener</title>
-
-<!-- Bootstrap -->
-<link rel="stylesheet" href="./css/bootstrap.min.css">
-
-
-</head>
+<html ng-app="coffiURL">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+		<title>coffiURL - Short your url!</title>
+		
+		<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+		<link href="./css/fonts.css" rel="stylesheet" type="text/css">
+		<link href="./css/index.css" rel="stylesheet" type="text/css">
+		
+	</head>
+	
 <body>
 
-<div ng-app="coffiURL" ng-controller="urlCtrl" class="container">
+<div class=" container jumbotron text-center"  ng-controller='UrlController as urlCtrl'>
+	<div class="container response alert alert-warning" ng-show="response" ng-class="{error: error, success:!error}">
+			<span><strong>{{responseMessage}}</strong>
+				<a ng-show="!error" href="/{{shortURL}}" target="_blank">cof.fi/{{shortURL}}</a>
+			</span>
+	</div>
 
-<h1>coffiURL - The short urlener</h1>
-
-<form name="urlForm" ng-submit="send()">
-    <label> Long URL: </label> <input ng-model="longURL" />
-    <input type="submit" value="Submit" />
-</form>
-
-<span ng-bind = "shortURL"> </span>
+	<div id="header">cof.fi URL</div><img alt="logo" src="./img/coffee3.png" width="100" height="100"><br>
+	<h6>Have a break and short your url! </h6>
+	
+	<form class="form-inline" role="form" name="urlForm"  ng-submit="urlCtrl.sendData()" > 
+ 		<div class="form-group">
+			<label class="sr-only" for="inputlg">Long url:</label>
+			<input size="40" type="text" ng-model="longURL" class="form-control input-sm"  placeholder="Paste a link to shorten it" required="required">
+			<input type="submit" class="btn btn-info btn-md" data-toggle="tooltip" title="Short the url!" value="Short me!" ng-click="error = false">
+		</div>
+		<br><br><div class="form-group">
+			<div class="checkbox">
+				<label><input type="checkbox" ng-model="isCustom" ng-click="disabled = !disabled" value=""> Custom short url?</label>
+			</div>
+			<label class="sr-only">Custom short url:</label>
+			<input type="text" size="20" ng-model="customURL"  class="form-control input-sm"  placeholder="Insert the custom short url" ng-disabled="disabled">
+			
+		</div>
+	</form>
 
 </div>
 
-<script src="./js/core/coffiURL.js"></script>
+<div class="container"  ng-controller='StatsController as statsCtrl'>
+  <div class="row">
+    <div class="col-sm-8">
+      <h2>Short URL statistics</h2>
+            
+      <form class="form-inline" role="form" name="statsForm" ng-submit="statsCtrl.getStats()">
+      
+      	<div class="form-group">
+      	
+      		<input size="40" type="text" ng-model="statsURL" class="form-control input-sm"  placeholder="Paste the short url for getting statistics" required="required">
+      		<input type="submit" id="stats_button" value="Get statistics" class="btn btn-info btn-md" data-toggle="tooltip" title="Get URL statistics" >
+      		
+      	</div>
+      
+      </form>
+    </div>
+    
+    <div class="col-sm-4">
+    
+  	<h2>Statistics for cof.fi/JiIQmX</h2>	
+    <p>{{statistics}}</p>
+    </div>
+   	
+  </div>
+</div>
+
+<footer class="footer text-center">
+    <p>Copyright &copy; <a href="http://cof.fi">cof.fi URL shortener</a> 2015</p>
+</footer>
+  
+<!-- Javascripts libraries -->
+<script type="text/javascript" src="./js/angular.min.js"></script>
+<script type="text/javascript" src="./js/core/coffiURL.js"></script>
+<script type="text/javascript" src="./js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
 
 </body>
 </html>
