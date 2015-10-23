@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="appStats">
+<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+		<title>coffiURL - Statistics</title>
+		
+		<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="bower_components/angular-chart.js/dist/angular-chart.css">
+		<link href="./css/fonts.css" rel="stylesheet" type="text/css">
+		<link href="./css/statistics.css" rel="stylesheet" type="text/css">
+			
+</head>
+<body>
+
+<div class="container jumbotron" >
+      <h2>cof.fi URL Statistics</h2>
+</div>
+
+<div class="container" ng-controller='StatsController as statsCtrl'>
+  <div class="row">
+    <div class="col-sm-6 text-center" >
+    	<h1>Browsers</h1>
+		<canvas id="browserPie"  chart-legend="true" style="width:100px; height:50px" class="chart chart-pie chart-xs" chart-data="browserData" chart-labels="browserLabels"></canvas>
+	</div>
+    <div class="col-sm-6 text-center">
+    	<h1>Platforms</h1>
+		<canvas id="platformPie"  chart-legend="true" style="width:100px; height:50px" class="chart chart-pie chart-xs" chart-data="platformData" chart-labels="platformLabels"></canvas>
+	</div>
+  </div>
+  
+  <div class="text-center">
+	    	<h1>Locations</h1>
+			<div google-chart chart="chart" style="display:inline-block;" > </div>
+  </div>
+ 
+    <div class="row text-center">
+    	<h1>Other stats</h1>
+    		<div class="col-sm-6">
+    			<span class="other"><strong>Number Of Clicks:</strong> 5</span>
+    		</div>
+    		<div class="col-sm-6">
+    			<span class="other"><strong>Distinct IP Adresses:</strong> 2</span>
+    		</div>
+	</div>
+ </div>
+
+<footer class="footer text-center">
+    <p>Copyright &copy; <a href="http://cof.fi">cof.fi URL shortener</a> 2015</p>
+</footer>
+
+<!-- Javascripts libraries -->
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/Chart.js/Chart.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+<script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
+<script type="text/javascript" src="./js/core/statistics.js"></script>
+
+</body>
+</html>

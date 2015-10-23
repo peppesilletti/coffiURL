@@ -6,9 +6,13 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,17 +40,14 @@ public class AppController {
 	  }
 	 
 	 @RequestMapping("{shortURL}")
-	    public String redirect(@PathVariable String shortURL) {
+	 	public String redirect(@PathVariable String shortURL) throws IOException, GeoIp2Exception {
 		 
-		 if (shortURL.isEmpty() || shortURL == null ) {
-			 return null;
-		 } else {
 			 URLShortenerEngine engine = new URLShortenerEngine();
 			 
 			 String longURL = engine.getLongURL(shortURL);
 			 
 			 if (longURL == null) {
-				 return null;
+				 throw new ShortUrlNotFoundException(shortURL);
 			 } else  {
 				 URLStatsEngine statsEngine = new URLStatsEngine();
 				 UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser();
@@ -65,32 +66,38 @@ public class AppController {
 
 			     return "redirect:"+longURL;
 			 }
-		 }
 	 }
 	 
-	 private String getLocation(String ip) {
+	 @RequestMapping("{shortURL}$")
+	    public String statistics(@PathVariable String shortURL) {
+		 URLShortenerEngine engine = new URLShortenerEngine();
+		 
+		 String longURL = engine.getLongURL(shortURL);
+		 
+		 if (longURL == null) {
+			 throw new ShortUrlNotFoundException(shortURL);
+		 } else  {
+		 		return "redirect:/app/statistics.html?shortURL="+shortURL;
+		 }
+	 	}
+	 
+	 private String getLocation(String ip) throws IOException, GeoIp2Exception {
 		 File db = new File("./GeoLite2-Country.mmdb");
 		 String cc = "";
-		 try {
-			DatabaseReader reader = new DatabaseReader.Builder(db).build();
-			InetAddress ipAddress = InetAddress.getByName(ip);
-			
-			CountryResponse response = reader.country(ipAddress);
-            Country country = response.getCountry();
-            cc = country.getIsoCode();
-            
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (GeoIp2Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 
-		 return cc;
+
+		 DatabaseReader reader = new DatabaseReader.Builder(db).build();
+		 InetAddress ipAddress = InetAddress.getByName(ip);
+		
+		 CountryResponse response = reader.country(ipAddress);
+         Country country = response.getCountry();
+         cc = country.getIsoCode();
+         		 
+		  return cc;
 	 }
+	 
+	 @ExceptionHandler({IOException.class, GeoIp2Exception.class})
+		void handleIllegalArgumentException(HttpServletResponse response) throws IOException {
+		    response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "A server error accurred. Please try again or come back later.");
+		}
 	
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="coffiURL">
+<html ng-app="app">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,7 @@
         
 		<title>coffiURL - Short your url!</title>
 		
-		<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
 		<link href="./css/fonts.css" rel="stylesheet" type="text/css">
 		<link href="./css/index.css" rel="stylesheet" type="text/css">
 		
@@ -28,16 +28,15 @@
 	<form class="form-inline" role="form" name="urlForm"  ng-submit="urlCtrl.sendData()" > 
  		<div class="form-group">
 			<label class="sr-only" for="inputlg">Long url:</label>
-			<input size="40" type="text" ng-model="longURL" class="form-control input-sm"  placeholder="Paste a link to shorten it" required="required">
-			<input type="submit" class="btn btn-info btn-md" data-toggle="tooltip" title="Short the url!" value="Short me!" ng-click="error = false">
+			<input size="40" type="text" ng-model="longURL" class="form-control input-lg"  placeholder="Paste a link to shorten it" required="required">
+			<input type="submit" class="btn btn-info btn-lg" data-toggle="tooltip" title="Short the url!" value="Short me!" ng-click="error = false">
 		</div>
 		<br><br><div class="form-group">
 			<div class="checkbox">
 				<label><input type="checkbox" ng-model="isCustom" ng-click="disabled = !disabled" value=""> Custom short url?</label>
 			</div>
 			<label class="sr-only">Custom short url:</label>
-			<input type="text" size="20" ng-model="customURL"  class="form-control input-sm"  placeholder="Insert the custom short url" ng-disabled="disabled">
-			
+			<input type="text" size="20" ng-model="customURL"  class="form-control input-md"  placeholder="Insert the custom short url" ng-disabled="disabled">
 		</div>
 	</form>
 
@@ -60,12 +59,6 @@
       </form>
     </div>
     
-    <div class="col-sm-4">
-    
-  	<h2>Statistics for cof.fi/JiIQmX</h2>	
-    <p>{{statistics}}</p>
-    </div>
-   	
   </div>
 </div>
 
@@ -74,10 +67,10 @@
 </footer>
   
 <!-- Javascripts libraries -->
-<script type="text/javascript" src="./js/angular.min.js"></script>
-<script type="text/javascript" src="./js/core/coffiURL.js"></script>
-<script type="text/javascript" src="./js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="./js/core/shortener.js"></script>
 
 </body>
 </html>
