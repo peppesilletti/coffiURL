@@ -1,7 +1,7 @@
 (function() {
 	var app = angular.module('app', []);
 	
-	app.controller("UrlController",  ['$scope', '$http', function($scope, $http) {
+	app.controller("UrlController",  ['$scope', '$http', '$window', function($scope, $http, $window) {
 		
 		$scope.disabled = true;
 		$scope.response = false;

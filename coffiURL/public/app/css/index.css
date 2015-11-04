@@ -6,6 +6,12 @@
     font-family: Montserrat, sans-serif;
 }
 
+#mainContainer {
+    border-radius: 15px 50px;
+    padding: 20px; 
+    top: 20px;
+} 
+
 body {
   font: 400 15px Lato, sans-serif;
   line-height: 1.8;

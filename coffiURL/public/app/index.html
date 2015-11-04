@@ -15,7 +15,7 @@
 	
 <body>
 
-<div class=" container jumbotron text-center"  ng-controller='UrlController as urlCtrl'>
+<div class=" container jumbotron text-center"  id="mainContainer" ng-controller='UrlController as urlCtrl'>
 	<div class="container response alert alert-warning" ng-show="response" ng-class="{error: error, success:!error}">
 			<span><strong>{{responseMessage}}</strong>
 				<a ng-show="!error" href="/{{shortURL}}" target="_blank">cof.fi/{{shortURL}}</a>
@@ -40,26 +40,6 @@
 		</div>
 	</form>
 
-</div>
-
-<div class="container"  ng-controller='StatsController as statsCtrl'>
-  <div class="row">
-    <div class="col-sm-8">
-      <h2>Short URL statistics</h2>
-            
-      <form class="form-inline" role="form" name="statsForm" ng-submit="statsCtrl.getStats()">
-      
-      	<div class="form-group">
-      	
-      		<input size="40" type="text" ng-model="statsURL" class="form-control input-sm"  placeholder="Paste the short url for getting statistics" required="required">
-      		<input type="submit" id="stats_button" value="Get statistics" class="btn btn-info btn-md" data-toggle="tooltip" title="Get URL statistics" >
-      		
-      	</div>
-      
-      </form>
-    </div>
-    
-  </div>
 </div>
 
 <footer class="footer text-center">

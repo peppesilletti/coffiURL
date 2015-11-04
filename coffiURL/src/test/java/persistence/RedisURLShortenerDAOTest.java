@@ -19,7 +19,7 @@ public class RedisURLShortenerDAOTest {
 		test = new RedisURLShortenerDAO();
 	}
 	
-	//Test per il metodo createShortURL
+	//Insert the values manually in the DB to make the tests working
 	
 	@Test
 	public void SetShortURLShouldNotBeEmpty() {

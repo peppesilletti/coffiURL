@@ -4,6 +4,7 @@ public class JSONResponse<T> {
 
 	private String response;
 	private Integer code;
+	private String longURL;
 	private T data;
 	
 	
@@ -14,6 +15,15 @@ public class JSONResponse<T> {
 		this.code = code;
 		this.data = data;
 	}
+	
+	public JSONResponse(String response, Integer code, T data, String longURL) {
+		super();
+		this.response = response;
+		this.code = code;
+		this.data = data;
+		this.longURL = longURL;
+	}
+	
 	public String getResponse() {
 		return response;
 	}
@@ -32,8 +42,9 @@ public class JSONResponse<T> {
 	public void setData(T data) {
 		this.data = data;
 	}
-	
-	
+	public String getLongURL() {
+		return longURL;
+	}
 	
 	
 }

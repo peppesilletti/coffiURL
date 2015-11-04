@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.silletti.coffiURL.core.URLShortenerEngine;
+import com.silletti.coffiURL.core.URLShortenerEngineInt;
 import com.silletti.coffiURL.core.URLStatsEngine;
 import com.silletti.coffiURL.core.URLStatsEngineInt;
 import com.silletti.coffiURL.entities.Statistics;
@@ -34,18 +36,25 @@ public class URLStatsEngineController {
 		} else {
 			
 			URLStatsEngineInt engine = new URLStatsEngine();
-			
+			URLShortenerEngineInt engine_url = new URLShortenerEngine();
+ 	    	
+ 	    	String longURL = engine_url.getLongURL(shortURL);
+ 	    	
+ 	    	if (longURL == null) {
+ 	    		throw new IllegalArgumentException(shortURL);
+ 	    	} 
+ 	    	
 			if (fromTime.isEmpty() || toTime.isEmpty()) {
 			
 				Statistics stats = engine.getStats(shortURL);
 				
-				return new JSONResponse<Statistics>("Success!", HttpServletResponse.SC_OK, stats);
+				return new JSONResponse<Statistics>("Success!", HttpServletResponse.SC_OK, stats, longURL);
 				
 			} else {
 				Statistics stats = engine.getStats
 						(shortURL, Long.valueOf(fromTime), Long.valueOf(toTime));
 				
-				return new JSONResponse<Statistics>("Success!", HttpServletResponse.SC_OK, stats);
+				return new JSONResponse<Statistics>("Success!", HttpServletResponse.SC_OK, stats, longURL);
 			}
 		}
 		

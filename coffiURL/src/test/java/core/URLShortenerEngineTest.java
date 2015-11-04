@@ -11,10 +11,10 @@ public class URLShortenerEngineTest {
 
 	private URLShortenerEngine test;
 	
-	private String shortURL = "test"+Math.random()*10;
+	private String longURL = "test"+Math.random()*10;
 	
-	//insert the value from the db
-	private String longURL = "xPxOcG";
+	//insert the value from the db manually to make the test works
+	private String shortURL = "xPxOcG";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -32,7 +32,7 @@ public class URLShortenerEngineTest {
 	@Test
 	public void ExistingPublicURLShouldNotBeInsered() {
 		String result = test.generateShortURL("www.twitter.it");
-		assertTrue(result.equals(longURL));
+		assertTrue(result.equals(shortURL));
 	}
 	
 	//Test for the custom short URL insert
@@ -59,7 +59,7 @@ public class URLShortenerEngineTest {
 	
 	@Test
 	public void ShortURLShouldExist() {
-		String result = test.getLongURL("xPxOcG");
+		String result = test.getLongURL(shortURL);
 		assertTrue(result.equals("www.twitter.it"));
 	}
 	

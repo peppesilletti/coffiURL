@@ -53,7 +53,7 @@ public class AppController {
 				 UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser();
 				 ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
 			 
-				 String ip = "176.32.19.77";
+				 String ip = "93.39.165.118"; //request.getRemoteAddr();
 				 
 				 URLInfo info = new URLInfo(
 						 agent.getName(),  // es. Mozilla, Chrome

@@ -1,9 +1,12 @@
 @CHARSET "UTF-8";
 
-.jumbotron {
-	background-color: #735d41;
-    color: #eeeae5;
+#header {
+    color: #735d41;
     font-family: Montserrat, sans-serif;
+}
+
+#preview {
+	font-size: 20px;
 }
 
 body {
@@ -14,4 +17,12 @@ body {
 
 .other {
 	font-size:30px;
+}
+
+.date {
+	margin-right:40px;
+}
+
+#btnStats {
+	background-color: #97BBCD
 }

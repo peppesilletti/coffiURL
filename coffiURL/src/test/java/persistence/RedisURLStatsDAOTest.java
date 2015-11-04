@@ -16,6 +16,8 @@ public class RedisURLStatsDAOTest {
 	private RedisURLStatsDAO test;
 	private URLInfo stats;
 	
+	//Insert the values in the DB manually to make the tests working
+	
 	@Before
 	public void setUp() throws Exception {
 		Date d = new Date();
