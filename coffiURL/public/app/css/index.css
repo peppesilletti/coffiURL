@@ -44,6 +44,10 @@ body {
 	border-radius: 4px;
 }
 
+.datetime-picker-dropdown > li.date-picker-menu div > table .btn-default {
+    border: 0;
+}
+
 .success {
 	color: green;
 	border: 2px solid green;

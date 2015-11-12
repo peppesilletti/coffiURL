@@ -135,6 +135,9 @@ public class RedisURLShortenerDAO implements URLShortenerDAOInt {
     }
 
 	
-	
+	public static void main(String[] args) {
+		RedisURLShortenerDAO dao = new RedisURLShortenerDAO();
+		dao.addShortURL("custom", "www.google.it", true);
+	}
 
 }

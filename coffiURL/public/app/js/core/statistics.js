@@ -11,17 +11,38 @@
 	app.controller("StatsController",  ['$scope', '$http', '$location', '$window', function($scope, $http, $location, $window) {
 		
 		var shortURL = $location.search()['shortURL']; 
-		var fromTime;
-		var toTime;
+		$scope.dateError = true;
 		
-		this.getPeriodStats = function() {
-			var fromTime = Date.parse($scope.fromTime);
-			var toTime = Date.parse($scope.toTime);
+		function processRequest(fromTime, toTime) {	
+				
+			$http({method: 'GET', url: 'http://localhost:8080/api/stats', params: {shortURL: shortURL, fromTime: fromTime, toTime: toTime}})
+			.success(function(data) {
+				
+				processStats(data);
+		
+			}). error(function(status) {
+				$window.location.href = "/404.html";
+			});		
 		}
 		
-		$http({method: 'GET', url: 'http://localhost:8080/api/stats', params: {shortURL: shortURL, fromTime: fromTime, toTime: toTime}})
-		.success(function(data) {
+		processRequest();
+		
+		this.getPeriodStats = function() {
 			
+			$scope.dateError = "";
+			
+			var fromTime = Date.parse($scope.fromTime);
+			var toTime = Date.parse($scope.toTime);
+			
+			if ($scope.fromTime == null || $scope.toTime == null) {
+				$scope.dateError = false;
+			} else {
+				$scope.dateError = true;
+				processRequest(fromTime, toTime);
+			}		
+		}		
+		
+		function processStats(data) {
 			var browser_keys = [];
 			var browser_values = [];
 			
@@ -76,10 +97,8 @@
 			
 			$scope.numOfClicks = data.data.statistics.others.numOfClicks;
 	 		$scope.distinctIpAdress = data.data.statistics.others.distinctIpAdresses;
+		}
 	
-		}). error(function(status) {
-			$window.location.href = "/404.html";
-		});				
 } ]);
 	
 }) ();

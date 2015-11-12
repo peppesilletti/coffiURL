@@ -30,10 +30,12 @@
 			<a  href="	{{longURL}}" target="_blank">{{longURL}}</a><br> 	
 	<div id="dates" class="text-center">
 	
-	  From: <datetimepicker class="date" ng-model="fromTime" show-spinners=true></datetimepicker>
-      To: <datetimepicker class="date" ng-model="toTime" show-spinners=true></datetimepicker>
+	  From: <datetimepicker class="date" ng-model="fromTime" show-spinners=true required="required"></datetimepicker>
+      To: <datetimepicker class="date" ng-model="toTime" show-spinners=true required="required" todayText></datetimepicker>
       <button ng-click="statsCtrl.getPeriodStats()" class="btn btn-info btn-md" id="btnStats" data-toggle="tooltip" title="Get Statistics!">Get Statistics!</button>
 	</div>		
+	
+	<span ng-show="!dateError" text-center><strong style="color:red;">Please, enter the dates!</strong></span>
 	
 	</div>	
 
