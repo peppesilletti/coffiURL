@@ -53,7 +53,7 @@ public class AppController {
 				 UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser();
 				 ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
 			 
-				 String ip = "93.39.165.118"; //request.getRemoteAddr();
+				 String ip = request.getRemoteAddr();
 				 
 				 URLInfo info = new URLInfo(
 						 agent.getName(),  // es. Mozilla, Chrome
@@ -81,17 +81,20 @@ public class AppController {
 		 }
 	 	}
 	 
-	 private String getLocation(String ip) throws IOException, GeoIp2Exception {
+	 private String getLocation(String ip) throws IOException {
 		 File db = new File("./GeoLite2-Country.mmdb");
 		 String cc = "";
 
 		 DatabaseReader reader = new DatabaseReader.Builder(db).build();
 		 InetAddress ipAddress = InetAddress.getByName(ip);
 		
-		 CountryResponse response = reader.country(ipAddress);
-         Country country = response.getCountry();
-         cc = country.getIsoCode();
-         		 
+		 try {
+			 CountryResponse response = reader.country(ipAddress);
+	         Country country = response.getCountry();
+	         cc = country.getIsoCode();
+		 } catch (GeoIp2Exception e) {
+			 cc = "Unknown";
+		 }
 		  return cc;
 	 }
 	 
