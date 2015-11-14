@@ -5,7 +5,7 @@ MAINTAINER Giuseppe Silletti <sillettig@gmail.com>
 #Update the system
 RUN apt-get update
 
-RUN DEBIAN_FRONTEND=noninteractive 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
 
 # Install Oracle Java 8, accept license command is required for non interactive mode
 RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
@@ -18,7 +18,7 @@ RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
 # Install Redis-Server
 RUN apt-get install -y redis-server
 
-COPY coffiURL/coffiURL/public /var/www/html/
+COPY coffiURL/public /var/www/html/
 
 #Install Maven
 RUN apt-get install -y maven
@@ -26,8 +26,8 @@ RUN apt-get install -y maven
 ENV MAVEN_HOME /usr/share/maven
 
 #Compile JAR
-ADD coffiURL/coffiURL/pom.xml /code/pom.xml 
-ADD coffiURL/coffiURL/src /code/src 
+ADD coffiURL/pom.xml /code/pom.xml 
+ADD coffiURL/src /code/src 
 WORKDIR /code
 
 RUN mvn dependency:resolve
@@ -35,5 +35,4 @@ RUN mvn -DskipTests clean install
 
 WORKDIR /	
 
-#6379=redis-server
 EXPOSE 6379
