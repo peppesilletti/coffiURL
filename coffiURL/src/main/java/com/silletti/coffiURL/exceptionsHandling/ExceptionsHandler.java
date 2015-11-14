@@ -30,7 +30,7 @@ public class ExceptionsHandler implements ExceptionsHandlerInt {
     private ExceptionsHandler() {
         if (handler == null) {
             try {
-                handler = new FileHandler("log/"+getTimestamp()+".log");
+                handler = new FileHandler("log/log"+getTimestamp()+".log");
                 handler.setLevel(Level.ALL);
                 formatter = new SimpleFormatter();
             } catch (IOException e) {
