@@ -24,7 +24,7 @@ public class Constants {
 	public static final String DAODONE = "OK";
 	
 	//Jedis connection constants
-	public static final String LOCALHOST = "172.17.0.2";
+	public static final String LOCALHOST = "localhost";
 	public static final Integer PORT = 6379;
 	
 	

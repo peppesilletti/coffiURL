@@ -1,45 +1,50 @@
-FROM ubuntu:14.04
+FROM java:8-jdk
+
+VOLUME /tmp
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 
 MAINTAINER Giuseppe Silletti <sillettig@gmail.com>
 
-#Update the system
+
 RUN apt-get update
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
 
-# Install Oracle Java 8
-RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
-	DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:webupd8team/java && \
-	apt-get update && \
-	echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections &&\
-	DEBIAN_FRONTEND=noninteractive apt-get install -y oracle-java8-installer
-
-
-# Install Redis-Server
+# Install Redis
 RUN apt-get install -y redis-server
 
-COPY coffiURL/public /var/www/html/
-
 #Install Maven
-RUN apt-get install -y maven
+RUN apt-get --no-install-recommends install maven -y
 
-ENV MAVEN_HOME /usr/share/maven
+#Add application files to container
+ADD coffiURL/ coffiURL/
 
-#Compile JAR
-ADD coffiURL/pom.xml /code/pom.xml 
-ADD coffiURL/src /code/src 
-WORKDIR /code
+WORKDIR /coffiURL
+
 
 #Build project with maven
-RUN mvn dependency:resolve
-RUN mvn -DskipTests clean package
+RUN mvn -DskipTests package
 
-#Start application
-RUN /usr/lib/jvm/java-8-oracle/bin/java -jar code/target/coffiURL-0.0.1-SNAPSHOT.jar init
+#Copying files in the coffiURL directory
+RUN cp /coffiURL/target/coffiURL-1.0.jar /coffiURL && \
+    cp -avr /coffiURL/target/lib     /coffiURL
+    
+#Removing src files
+RUN rm -R /coffiURL/src /coffiURL/target /coffiURL/pom.xml
 
-WORKDIR /	
+WORKDIR /
 
-#Exposing ports
-EXPOSE 80 6379
+# Init script for starting redis and application
+RUN touch init.sh && \
+	echo '#!/bin/bash' >> init.sh && \
+	echo 'redis-server &' >> init.sh && \
+	echo 'cd /coffiURL && java -jar coffiURL-1.0.jar init' >> init.sh && \
+	chmod 777 init.sh	
+	
 
-CMD "/bin/bash"
+#Exposing ports for Spring-Boot and Redis Server
+
+EXPOSE 8080 6379 
+
+
+CMD "/init.sh"
