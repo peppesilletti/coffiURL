@@ -6,13 +6,13 @@ CoffiURL is a URL shortener implemented with a back-end in Java, a front-end in 
 
 #How to install
 
-1. Clone the repository from Github:
+1. Clone the repository from Github:  
     `git clone http://github.com/peppesilletti/coffiURL.git`
 
-2. Move inside the folder coffiURL and build the docker image with the Dockerfile with:
+2. Move inside the folder coffiURL and build the docker image with the Dockerfile with:  
     `docker build -t url-shortener .`
 
-3. Run the container
+3. Run the container  
     `docker run -d -p 8080:8080 --name coffiURL url-shortener`
 
 4. If you are a Linux user, skip this step. Otherwise, you need         to map the 8080 port in VirtualBox
@@ -24,15 +24,15 @@ For the statistics page of a shortURL, write 'http://localhost:8080/shortURL$'. 
 
 #How to use api
 
-`url POST: http://localhost:8080/api/url
-url GET: http://localhost:8080/api/url?shortURL=..
+`url POST: http://localhost:8080/api/url  
+url GET: http://localhost:8080/api/url?shortURL=..  
 
-statistics POST: http://localhost:8080/api/stats
-all statistics GET: http://localhost:8080/api/stats?shortURL=..
-period statistics GET: http://localhost:8080/api/stats?shortURL=..&fromTime=..&toTime=..`
+statistics POST: http://localhost:8080/api/stats  
+all statistics GET: http://localhost:8080/api/stats?shortURL=..  
+period statistics GET: http://localhost:8080/api/stats?shortURL=..&fromTime=..&toTime=..`  
 
 #Developer
 
-'Giuseppe Silletti - <sillettig@gmail.com>'
+`Giuseppe Silletti - <sillettig@gmail.com>`
 
 
