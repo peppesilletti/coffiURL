@@ -1,8 +1,8 @@
 #coffiURL - URL shortener
 
-`A URL shortener is an online application that converts a regular URL (the web address that starts with http://) into its condensed format. The user only has to copy the full URL of a website and paste it into the URL shortening tool to come up with an abbreviated version that is around 10 to 20 characters long.
+A URL shortener is an online application that converts a regular URL (the web address that starts with http://) into its condensed format. The user only has to copy the full URL of a website and paste it into the URL shortening tool to come up with an abbreviated version that is around 10 to 20 characters long.
 
-CoffiURL is a URL shortener implemented with a back-end in Java, a front-end in AngularJS and with Redis as persistence system.`
+CoffiURL is a URL shortener implemented with a back-end in Java, a front-end in AngularJS and with Redis as persistence system.
 
 #How to install
 
@@ -24,12 +24,12 @@ For the statistics page of a shortURL, write 'http://localhost:8080/shortURL$'. 
 
 #How to use api
 
-`url POST: http://localhost:8080/api/url  
-url GET: http://localhost:8080/api/url?shortURL=..  
+**url POST**: http://localhost:8080/api/url  
+**url GET**: http://localhost:8080/api/url?shortURL=..  
 
-statistics POST: http://localhost:8080/api/stats  
-all statistics GET: http://localhost:8080/api/stats?shortURL=..  
-period statistics GET: http://localhost:8080/api/stats?shortURL=..&fromTime=..&toTime=..`  
+**statistics POST**: http://localhost:8080/api/stats  
+**all statistics GET**: http://localhost:8080/api/stats?shortURL=..  
+**period statistics GET**: http://localhost:8080/api/stats?shortURL=..&fromTime=..&toTime=..  
 
 #Developer
 
