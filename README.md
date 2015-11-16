@@ -24,12 +24,21 @@ For the statistics page of a shortURL, write 'http://localhost:8080/shortURL$'. 
 
 #How to use api
 
-**url POST**: http://localhost:8080/api/url  
-**url GET**: http://localhost:8080/api/url?shortURL=..  
+* Create a new short URL  
+**[POST]**: http://localhost:8080/api/url  
+`curl --data "longURL=www.google.it" http://localhost:8080/api/url`  
+`curl --data "longURL=www.google.it&shortURL=custom" http://localhost:8080/api/url`
 
-**statistics POST**: http://localhost:8080/api/stats  
-**all statistics GET**: http://localhost:8080/api/stats?shortURL=..  
-**period statistics GET**: http://localhost:8080/api/stats?shortURL=..&fromTime=..&toTime=..  
+* Get a long URL  
+**[GET]**: http://localhost:8080/api/url?shortURL=xfGhti
+`curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/api/url?shortURL=xfGhti`  
+
+* Get short URL statistics  
+**[GET] All statistics**: http://localhost:8080/api/stats?shortURL=xfGhti  
+`curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/api/stats?shortURL=xfGhti`    
+**[GET] Period statistics**: http://localhost:8080/api/stats?shortURL=xfGhti&fromTime=123456&toTime=1234589  
+`curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/api/stats?shortURL=xfGhti&fromTime=123456&toTime=1234589` 
+>toTime e fromTime sono in formato timestamp 
 
 #Developer
 
